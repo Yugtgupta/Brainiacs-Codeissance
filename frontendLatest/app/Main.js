@@ -18,11 +18,15 @@ import ScholarshipPortal from "./components/ScholarshipPortal.js"
 import LandingPage from "./components/forum/LandingPage.js"
 import AddForum from "./components/forum/AddForum.js"
 import SingleForum from "./components/forum/SingleForum.js"
-import ScholarshipList from "./components/scholarshipList.js"
+import ScholarshipList from "./components/ScholarshipList.js"
 import Quiz from "./components/Quiz.js"
 import Recorder from "./components/Recorder.js"
 import VoiceComp from "./components/ChatUi.js"
 import ChatUi from "./components/ChatUi.js"
+import MenteeDashboard from "./components/MenteeDashboard.js"
+import ChatInterface from "./components/ChatInterface.js"
+import MentorDashboard from "./components/MentorDashboard.js"
+import VivaPractice from "./components/VivaPractice.js"
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -96,6 +100,13 @@ function Main() {
             <Route path="/hero" element={state.loggedIn ? redirect("/dashboard") : <Hero />} />
             <Route path="/dashboard" element={state.loggedIn ? redirect("/dashboard") : <Dashboard />} />
             <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipList />} />
+            <Route path="/mentee-dashboard" element={state.loggedIn ? <Dashboard /> : <MenteeDashboard />} />
+            <Route path="/chat" element={<ChatInterface />} />
+            <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+            <Route path="/viva" element={<VivaPractice />} />
+
+
+
             <Route path="/community-forum" element={<LandingPage />} />
             <Route path="/community-forum/add" element={<AddForum />} />
             <Route path="/community-forum/:id" element={<SingleForum />} />
