@@ -1,3 +1,4 @@
+import { Axios } from "axios";
 import React, { useState } from "react";
 
 const MenteeDashboard = () => {
@@ -62,9 +63,21 @@ const MenteeDashboard = () => {
     setCurrentSession(null);
   };
 
-  const connectMentorHandler = (e, mentor) => {
+  const connectMentorHandler = async (e, mentor) => {
     e.preventDefault();
     console.log("CONNECT MENTOR HANDLER", mentor);
+
+    await Axios.post(
+      "/connect-mentor",
+      {
+        mentorId: mentor.id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
   };
 
   return (

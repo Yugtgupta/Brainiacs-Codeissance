@@ -194,7 +194,7 @@ function Main() {
                 state.loggedIn && state?.user?.role === "student" ? (
                   <MenteeDashboard />
                 ) : (
-                  <LockScreen />
+                  <Navigate to="/dashboard" />
                 )
               }
             />
