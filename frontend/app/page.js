@@ -110,14 +110,17 @@ export default function Home() {
     <>
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
-          <Header />
+          {/* <Header /> */}
           <>
             {state.loggedIn ? (
-              <h1>Logged in</h1>
+              <>
+                <h1>Logged in</h1>
+                <button onClick={logoutHandler}>Logout</button>
+              </>
             ) : (
               <>
-                Not Logged in
-                <form onSubmit={loginHandler}>
+                <RegistrationForm />
+                {/* <form onSubmit={loginHandler}>
                   <input
                     type="email"
                     placeholder="Email..."
@@ -147,7 +150,7 @@ export default function Home() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                   <button type="submit">Register</button>
-                </form>
+                </form> */}
               </>
             )}
           </>
