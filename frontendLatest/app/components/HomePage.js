@@ -4,7 +4,7 @@ export default function HomePage() {
   const [hoverButton, setHoverButton] = useState(false);
 
   return (
-    <div className="relative w-full min-h-screen bg-gradient-to-r from-purple-500 via-indigo-600 to-blue-500 text-white overflow-hidden">
+    <div className="relative w-full min-h-screen bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500 text-white overflow-hidden">
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -41,7 +41,16 @@ export default function HomePage() {
       {/* Divider with smooth gradient transition */}
       <div className="relative w-full h-20 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500"></div>
 
-      {/* About Section */}
+      {/* Vision Statement Section */}
+      <div className="relative min-h-[70svh] w-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500 text-white py-12 mt-[-20px]">
+        <div className="absolute top-[-100px] left-[50px] w-[300px] h-[300px] rounded-full bg-white opacity-10 blur-3xl" />
+        <h3 className="text-4xl font-bold text-center mb-8">Our Vision</h3>
+        <p className="max-w-2xl mx-auto text-lg text-center px-4">
+          At VidyaSaathi, we envision a world where quality education is accessible to all. Our platform connects students with exceptional mentors, providing the tools and resources needed to enhance learning experiences and achieve academic success.
+        </p>
+      </div>
+
+      {/* Core Features Section */}
       <div className="relative w-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500 text-white py-12 mt-[-20px]">
         <h3 className="text-4xl font-bold text-center mb-12">Our Core Features</h3>
         
@@ -72,8 +81,22 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Additional Section */}
+      <div className="relative mt-20 min-h-[70svh] w-full bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-500 text-white py-12">
+        <div className="absolute bottom-[-100px] right-[50px] w-[300px] h-[300px] rounded-full bg-white opacity-10 blur-3xl" />
+        <h3 className="text-4xl font-bold text-center mb-8">Join Us Today</h3>
+        <p className="max-w-2xl mx-auto text-lg text-center px-4 mb-8">
+          Become a part of our thriving community and unlock your potential with personalized learning paths, expert guidance, and collaborative opportunities.
+        </p>
+        <div className="flex justify-center">
+          <button className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+            Sign Up Now
+          </button>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="w-full p-4 text-center text-white/60">
+      <footer className="w-full p-4 text-center text-white/80">
         © 2024 VidyaSaathi. All Rights Reserved.
       </footer>
     </div>
