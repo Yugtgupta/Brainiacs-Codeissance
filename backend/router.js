@@ -5,6 +5,7 @@ const TryCatch = require("./helper/TryCatch")
 const Messages = require("./constants/Messages")
 const LlmHelper = require("./helper/LlmHelper")
 //imports here
+const chatController = require('./controllers/chatController');
 const answerController = require("./controllers/answerController")
 
 const questionController = require("./controllers/questionController")
@@ -16,6 +17,10 @@ const tutorController = require("./controllers/tutorController")
 const studentController = require("./controllers/studentController")
 
 //code here
+
+    router.post('/send-chat', AuthHelper.verifyToken, new TryCatch(chatController.sendChat).tryCatchGlobe())
+    router.get('/get-my-chat/:id/:chatContactId',  AuthHelper.verifyToken, new TryCatch(chatController.getChatConvo).tryCatchGlobe())
+    
 
 //Entity - Answer --start
 
