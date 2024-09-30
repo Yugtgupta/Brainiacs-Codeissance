@@ -33,6 +33,7 @@ import MenteeDashboard from "./components/MenteeDashboard.js"
 import ChatInterface from "./components/ChatInterface.js"
 import MentorDashboard from "./components/MentorDashboard.js"
 import VivaPractice from "./components/VivaPractice.js"
+import HomePage from "./components/HomePage.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -108,12 +109,13 @@ function Main() {
 
             <Route path="/dashboard" element={state.loggedIn ? <Dashboard /> : <LockScreen />} />
 
-            <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />} />
+            <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipList />} />
 
             <Route path="/mentee-dashboard" element={state.loggedIn ? <MenteeDashboard /> : <LockScreen />} />
             <Route path="/chat/:mentorId" element={<ChatInterface />} />
             <Route path="/mentor-dashboard" element={<MentorDashboard />} />
             <Route path="/viva" element={<VivaPractice />} />
+            <Route path="/home" element={<HomePage />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
