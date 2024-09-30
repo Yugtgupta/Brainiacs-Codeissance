@@ -3,3 +3,5 @@ langchain
 langchain-community
 langchainhub
 langchain-openai
+beautifulsoup4
+pandas
