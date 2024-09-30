@@ -7,10 +7,13 @@ Axios.defaults.baseURL = "http://localhost:4000";
 
 import DispatchContext from "./DispatchContext.js";
 import StateContext from "./StateContext.js";
-
+import { Toaster } from "react-hot-toast";
 //Our components
 import LockScreen from "./components/LockScreen.js";
 import RegistrationForm from "./components/RegisterPage.js";
+import LandingPage from "./components/forum/LandingPage.js";
+import AddForum from "./components/forum/AddForum.js";
+import SingleForum from "./components/forum/SingleForum.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -29,7 +32,6 @@ function Main() {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
-
         draft.user = action.data.data;
         return; //Use either return or break
       case "logout":
@@ -68,8 +70,11 @@ function Main() {
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
+          {/* <Toaster /> */}
           {/* <Header /> */}
           {/* <FlashMessages messages={state.flashMessages} /> */}
+
+          <Toaster />
 
           <Routes>
             <Route
@@ -82,6 +87,9 @@ function Main() {
                 state.loggedIn ? <div>Logged In</div> : <RegistrationForm />
               }
             />
+            <Route path="/community-forum" element={<LandingPage />} />
+            <Route path="/community-forum/add" element={<AddForum />} />
+            <Route path="/community-forum/:id" element={<SingleForum />} />
             {/* <Route path="/internships" element={state.loggedIn ? <InternshipCard /> : <HomeGuest />} />
             <Route path="/applied-internships" element={state.loggedIn ? <AppliedInternships /> : <HomeGuest />} /> */}
 
