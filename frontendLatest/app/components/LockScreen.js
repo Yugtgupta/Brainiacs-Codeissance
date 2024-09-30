@@ -1,4 +1,5 @@
-import React from "react"
+import React from "react";
+import { Link } from "react-router-dom";
 
 function LockScreen() {
   return (
@@ -10,13 +11,15 @@ function LockScreen() {
         </div>
 
         <div className="role-buttons">
-          <button className="role-btn mentor-btn">Sign in as Mentor</button>
+          <Link to="/register" className="role-btn mentor-btn">
+            Sign in as Mentor
+          </Link>
           <button className="role-btn student-btn">Sign in as Student</button>
           <button className="role-btn tutor-btn">Sign in as Tutor</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default LockScreen
+export default LockScreen;
