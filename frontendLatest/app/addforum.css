@@ -1,0 +1,102 @@
+.add-forum-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.add-forum-container form {
+  width: 70%;
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add-forum-container form div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.add-forum-container form div label {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.add-forum-container form div input {
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.add-forum-container form div.add-forum-tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.add-forum-container form div.add-forum-tags input {
+  width: 70%;
+}
+
+.add-forum-container form div.add-forum-tags button {
+  width: 20%;
+  border-radius: 100px;
+  border: 2px solid #000;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.add-forum-container form div.add-forum-tags button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.add-forum-container form div.display-forum-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: normal;
+  gap: 4px 10px;
+  margin: 16px 10px;
+}
+
+.add-forum-container form div.display-forum-tags span {
+  width: fit-content;
+  border: 2px solid #000;
+}
+
+.add-forum-container form div.display-forum-tags span.display-forum-tag {
+  background-color: #e0e0e0; /* Light gray background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 5px 10px; /* Padding for better spacing */
+  font-size: 14px; /* Font size */
+  color: #333; /* Text color */
+  transition: background-color 0.2s ease; /* Transition for hover effect */
+}
+
+.add-forum-container form div.display-forum-tags span.display-forum-tag:hover {
+  background-color: #b0b0b0; /* Darker gray on hover */
+}
+
+.add-forum-container form div button {
+  border: 2px solid #000;
+  background-color: transparent;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 100px;
+}
+
+@media screen and (max-width: 425px) {
+  .add-forum-container form {
+    width: 90%;
+  }
+
+  .add-forum-container form div.add-forum-tags {
+    flex-direction: column;
+  }
+}
