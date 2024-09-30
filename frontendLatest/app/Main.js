@@ -10,6 +10,10 @@ import StateContext from "./StateContext.js"
 
 //Our components
 import LockScreen from "./components/LockScreen.js"
+import Quiz from "./components/Quiz.js"
+import Recorder from "./components/Recorder.js"
+import VoiceComp from "./components/ChatUi.js"
+import ChatUi from "./components/ChatUi.js"
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -76,6 +80,10 @@ function Main() {
             <Route path="/applied-internships" element={state.loggedIn ? <AppliedInternships /> : <HomeGuest />} /> */}
 
             {/* PAssing addFlashMessage() funcytion to createPost using pprops */}
+
+            {/* //Kush Section ---> Dont touch */}
+            <Route path="/quiz" element={state.loggedIn ? <div>Loged in</div> : <Quiz />} />
+            <Route path="/testAudio" element={state.loggedIn ? <div>Loged in</div> : <ChatUi />} />
           </Routes>
           {/* <Footer /> */}
         </BrowserRouter>
