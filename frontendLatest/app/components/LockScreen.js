@@ -9,7 +9,7 @@ function LockScreen() {
           <h1 className="title">Welcome Back!</h1>
           <p className="subtitle">Please select your role to sign in</p>
         </div>
-        <div className="role-buttons">
+        <div className=" flex justify-center items-center">
           <Link to="/register" className="role-btn mentor-btn">
             Sign in as Mentor
           </Link>
