@@ -35,6 +35,7 @@ import RegistrationPageTutor from "./components/RegistrationPageTutor.js";
 import LoginPageTutor from "./components/LoginPageTutor.js";
 import LoginPageMentor from "./components/LoginPageMentor.js";
 import ScheduleMeetTutor from "./components/ScheduleMeetTutor.js";
+import StreamVideoProvider from "./provider/StreamProvider.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -45,6 +46,7 @@ function Main() {
       token: localStorage.getItem("talentSyncToken"),
       username: localStorage.getItem("talentSyncEmail"),
       role: localStorage.getItem("talentSyncRole"),
+      id: localStorage.getItem("talentSyncId"),
     },
   };
 
@@ -70,7 +72,9 @@ function Main() {
       localStorage.setItem("talentSyncToken", state.user.token);
       localStorage.setItem("talentSyncRole", state.user.role);
       localStorage.setItem("talentSyncId", state.user.id);
+      localStorage.setItem("talentSyncEmail", state.user.email);
       console.log("LOGGED IN");
+      console.log("STATE USER", state.user);
     } else {
       localStorage.removeItem("talentSyncToken");
       localStorage.removeItem("talentSyncEmail");
@@ -82,129 +86,131 @@ function Main() {
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
-        <BrowserRouter>
-          {/* <Toaster /> */}
-          {/* <Header /> */}
-          {/* <FlashMessages messages={state.flashMessages} /> */}
+        <StreamVideoProvider>
+          <BrowserRouter>
+            {/* <Toaster /> */}
+            {/* <Header /> */}
+            {/* <FlashMessages messages={state.flashMessages} /> */}
 
-          <Toaster />
-          <Routes>
-            <Route
-              path="/"
-              element={state.loggedIn ? <div>Loged in</div> : <LockScreen />}
-            />
+            <Toaster />
+            <Routes>
+              <Route
+                path="/"
+                element={state.loggedIn ? <div>Loged in</div> : <LockScreen />}
+              />
 
-            <Route
-              path="/register"
-              element={
-                state.loggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <RegistrationPage />
-                )
-              }
-            />
+              <Route
+                path="/register"
+                element={
+                  state.loggedIn ? (
+                    <Navigate to="/dashboard" />
+                  ) : (
+                    <RegistrationPage />
+                  )
+                }
+              />
 
-            <Route
-              path="/register-mentor"
-              element={
-                state.loggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <RegistrationPageMentor />
-                )
-              }
-            />
+              <Route
+                path="/register-mentor"
+                element={
+                  state.loggedIn ? (
+                    <Navigate to="/dashboard" />
+                  ) : (
+                    <RegistrationPageMentor />
+                  )
+                }
+              />
 
-            <Route
-              path="/register-tutor"
-              element={
-                state.loggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <RegistrationPageTutor />
-                )
-              }
-            />
+              <Route
+                path="/register-tutor"
+                element={
+                  state.loggedIn ? (
+                    <Navigate to="/dashboard" />
+                  ) : (
+                    <RegistrationPageTutor />
+                  )
+                }
+              />
 
-            <Route
-              path="/login"
-              element={
-                state.loggedIn ? <Navigate to="/dashboard" /> : <LoginPage />
-              }
-            />
+              <Route
+                path="/login"
+                element={
+                  state.loggedIn ? <Navigate to="/dashboard" /> : <LoginPage />
+                }
+              />
 
-            <Route
-              path="/login-mentor"
-              element={
-                state.loggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <LoginPageMentor />
-                )
-              }
-            />
+              <Route
+                path="/login-mentor"
+                element={
+                  state.loggedIn ? (
+                    <Navigate to="/dashboard" />
+                  ) : (
+                    <LoginPageMentor />
+                  )
+                }
+              />
 
-            <Route
-              path="/login-tutor"
-              element={
-                state.loggedIn ? (
-                  <Navigate to="/dashboard" />
-                ) : (
-                  <LoginPageTutor />
-                )
-              }
-            />
+              <Route
+                path="/login-tutor"
+                element={
+                  state.loggedIn ? (
+                    <Navigate to="/dashboard" />
+                  ) : (
+                    <LoginPageTutor />
+                  )
+                }
+              />
 
-            <Route
-              path="/dashboard/schedule-meet"
-              element={
-                state.loggedIn && state?.user?.role === "tutor" ? (
-                  <ScheduleMeetTutor />
-                ) : (
-                  <Navigate to="/dashboard" />
-                )
-              }
-            />
+              <Route
+                path="/dashboard/schedule-meet"
+                element={
+                  state.loggedIn && state?.user?.role === "tutor" ? (
+                    <ScheduleMeetTutor />
+                  ) : (
+                    <Navigate to="/dashboard" />
+                  )
+                }
+              />
 
-            <Route
-              path="/hero"
-              element={state.loggedIn ? console.log("LOGGED IN") : <Hero />}
-            />
+              <Route
+                path="/hero"
+                element={state.loggedIn ? console.log("LOGGED IN") : <Hero />}
+              />
 
-            <Route
-              path="/dashboard"
-              element={state.loggedIn ? <Dashboard /> : <LockScreen />}
-            />
+              <Route
+                path="/dashboard"
+                element={state.loggedIn ? <Dashboard /> : <LockScreen />}
+              />
 
-            <Route
-              path="/scholarship"
-              element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
-            />
+              <Route
+                path="/scholarship"
+                element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
+              />
 
-            <Route path="/community-forum" element={<LandingPage />} />
+              <Route path="/community-forum" element={<LandingPage />} />
 
-            <Route path="/community-forum/add" element={<AddForum />} />
+              <Route path="/community-forum/add" element={<AddForum />} />
 
-            <Route path="/community-forum/:id" element={<SingleForum />} />
-            {/* <Route path="/internships" element={state.loggedIn ? <InternshipCard /> : <HomeGuest />} />
+              <Route path="/community-forum/:id" element={<SingleForum />} />
+              {/* <Route path="/internships" element={state.loggedIn ? <InternshipCard /> : <HomeGuest />} />
             <Route path="/applied-internships" element={state.loggedIn ? <AppliedInternships /> : <HomeGuest />} /> */}
 
-            {/* PAssing addFlashMessage() funcytion to createPost using pprops */}
+              {/* PAssing addFlashMessage() funcytion to createPost using pprops */}
 
-            {/* //Kush Section ---> Dont touch */}
-            <Route
-              path="/quiz"
-              element={state.loggedIn ? <div>Loged in</div> : <Quiz />}
-            />
-            <Route
-              path="/testAudio"
-              element={state.loggedIn ? <div>Loged in</div> : <ChatUi />}
-            />
-          </Routes>
-          {/* <RoutesPage /> */}
-          {/* <Footer /> */}
-        </BrowserRouter>
+              {/* //Kush Section ---> Dont touch */}
+              <Route
+                path="/quiz"
+                element={state.loggedIn ? <div>Loged in</div> : <Quiz />}
+              />
+              <Route
+                path="/testAudio"
+                element={state.loggedIn ? <div>Loged in</div> : <ChatUi />}
+              />
+            </Routes>
+            {/* <RoutesPage /> */}
+            {/* <Footer /> */}
+          </BrowserRouter>
+        </StreamVideoProvider>
       </DispatchContext.Provider>
     </StateContext.Provider>
   );
