@@ -109,7 +109,7 @@ function Main() {
 
             <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />} />
 
-            <Route path="/mentee-dashboard" element={state.loggedIn ? <Dashboard /> : <MenteeDashboard />} />
+            <Route path="/mentee-dashboard" element={state.loggedIn ? <MenteeDashboard /> : <LockScreen />} />
             <Route path="/chat" element={<ChatInterface />} />
             <Route path="/mentor-dashboard" element={<MentorDashboard />} />
             <Route path="/viva" element={<VivaPractice />} />
