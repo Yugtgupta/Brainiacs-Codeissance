@@ -1,55 +1,21 @@
 "use client";
 
-import Dashboard from "@/components/Dashboard"
-import Header from "@/components/Header"
-import LandingPage from "@/components/LandingPage"
-import LockScreen from "@/components/LockScreen"
-import VidyaSaathiLandingPage from "@/components/VidyaSaarthiLandingPage"
-import DispatchContext from "@/context/DispatchContext"
-import StateContext from "@/context/StateContext"
-import ourReducer from "@/reducers/ourReducer"
-import Axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import { useImmerReducer } from "use-immer"
+import initialState from "@/actions/initialState";
+import Dashboard from "@/components/Dashboard";
+import Header from "@/components/Header";
+import LandingPage from "@/components/LandingPage";
+import LockScreen from "@/components/LockScreen";
+import VidyaSaathiLandingPage from "@/components/VidyaSaarthiLandingPage";
+import DispatchContext from "@/context/DispatchContext";
+import StateContext from "@/context/StateContext";
+import ourReducer from "@/reducers/ourReducer";
+import Axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import { useImmerReducer } from "use-immer";
 
-Axios.defaults.baseURL = "http://localhost:4000"
+Axios.defaults.baseURL = "http://localhost:4000";
 
 export default function Home() {
-  const initialState = {
-    loggedIn:
-      typeof window !== "undefined" &&
-      Boolean(localStorage.getItem("talentSyncToken")),
-    flashMessages: [],
-    user: {
-      token:
-        typeof window !== "undefined"
-          ? localStorage.getItem("talentSyncToken")
-          : null,
-      username:
-        typeof window !== "undefined"
-          ? localStorage.getItem("talentSyncEmail")
-          : null,
-    },
-  };
-
-  function ourReducer(draft, action) {
-    switch (action.type) {
-      case "login":
-        draft.loggedIn = true;
-        draft.user = action.data.data;
-        return;
-      case "logout":
-        draft.loggedIn = false;
-        draft.user = null;
-        return;
-      case "flashMessage":
-        draft.flashMessages.push(action.value);
-        return;
-      default:
-        return;
-    }
-  }
-
   const [state, dispatch] = useImmerReducer(ourReducer, initialState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -126,7 +92,7 @@ export default function Home() {
                 <RegistrationForm />
               </>
             )}
-          </> */}
+          </>
           </> */}
         </DispatchContext.Provider>
       </StateContext.Provider>
