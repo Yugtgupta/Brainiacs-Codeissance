@@ -5,3 +5,6 @@ langchainhub
 langchain-openai
 beautifulsoup4
 pandas
+faiss-cpu
+chromadb
+jq
