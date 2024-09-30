@@ -1,107 +1,89 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
 
 const singleFormData = {
   fTitle: "Sample Forum Title",
   description: "This is a sample description for the forum post.",
-  tags: ["react", "javascript", "forum"],
-};
+  tags: ["react", "javascript", "forum"]
+}
 
 const SingleForum = () => {
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState("")
   const [answersList, setAnswersList] = useState([
     {
-      answer:
-        "This is the answer for the above question. I need more help. Need more content in this answer or can you help me?Amet esse qui aliquip aliquip veniam deserunt amet tempor eu consequat anim.",
+      answer: "This is the answer for the above question. I need more help. Need more content in this answer or can you help me? Amet esse qui aliquip aliquip veniam deserunt amet tempor eu consequat anim.",
       username: "demoname",
-      role: "student",
-    },
-  ]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (answer) {
-      setAnswersList([...answersList, answer]);
-      setAnswer("");
+      role: "student"
     }
-  };
+  ])
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    if (answer) {
+      setAnswersList([...answersList, { answer, username: "Kush Kapadia", role: "student" }])
+      setAnswer("")
+    }
+  }
 
   return (
-    <div className="forum-container">
-      <Link style={{ color: "black", fontSize: "16px" }} to="/community-forum">
-        Go Back
+    <div className="container mt-4">
+      <Link className="text-primary mb-4 d-block" to="/community-forum">
+        &larr; Back to Forum
       </Link>
-      <h1 style={{ marginTop: "30px" }}>{singleFormData.fTitle}</h1>
-      <p>{singleFormData.description}</p>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-          marginTop: "60px",
-          alignItems: "end",
-        }}
-      >
-        <textarea
-          type="text"
-          value={answer}
-          rows={4}
-          onChange={(e) => setAnswer(e.target.value)}
-          placeholder="Add your answer"
-          style={{
-            border: "2px solid #000",
-            padding: "10px 18px",
-            width: "100%",
-            resize: "none",
-            borderRadius: "10px",
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            padding: "10px 20px",
-            width: "fit-content",
-            borderRadius: "10px",
-            background: "#000",
-            color: "#fff",
-          }}
-        >
-          Submit
-        </button>
-      </form>
-      <div>
-        <h3>Answers:</h3>
-        {answersList.length === 0 && <>No Answers Yet</>}
-        {/* <ul style={{ marginLeft: "30px" }}>
-          {answersList.map((ans, index) => (
-            <li key={index}>{ans.answer}</li>
-          ))}
-        </ul> */}
 
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {answersList.length === 0 && <p>No Answers Yet</p>}
-          {answersList?.map((ans, index) => (
-            <div
-              key={index}
-              style={{
-                margin: "10px 20px",
-                border: "2px solid #000",
-                borderRadius: "8px",
-                padding: "16px 20px",
-              }}
-            >
-              <p style={{ margin: "4px 0 10px 0" }}>{ans.answer}</p>
-              <p style={{ margin: "4px 0", textAlign: "right" }}>
-                By {ans.username}
-              </p>
-              <p style={{ margin: "4px 0", textAlign: "right" }}>{ans.role}</p>
+      {/* Forum Question Section */}
+      <div className="card mb-4 shadow-sm">
+        <div className="card-body">
+          <h1 className="card-title">{singleFormData.fTitle}</h1>
+          <p className="card-text">{singleFormData.description}</p>
+          <div className="mt-3">
+            {singleFormData.tags.map((tag, index) => (
+              <span key={index} className="badge badge-secondary mr-2">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Answer Form */}
+      <div className="card mb-4 shadow-sm">
+        <div className="card-body">
+          <h4 className="mb-3">Add Your Answer</h4>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <textarea className="form-control" rows="4" value={answer} onChange={e => setAnswer(e.target.value)} placeholder="Write your answer here..."></textarea>
             </div>
-          ))}
+            <button type="submit" className="btn btn-primary btn-block" disabled={!answer.trim()}>
+              Submit Answer
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Answers Section */}
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <h3 className="mb-4">Answers</h3>
+          {answersList.length === 0 ? (
+            <p>No answers yet. Be the first to answer!</p>
+          ) : (
+            answersList.map((ans, index) => (
+              <div key={index} className="media mb-4 p-3 border rounded shadow-sm">
+                <img src={`https://ui-avatars.com/api/?name=${ans.username}&background=random`} alt={ans.username} className="mr-3 rounded-circle" style={{ width: "60px", height: "60px" }} />
+                <div className="media-body">
+                  <p className="text-muted mb-1">
+                    {ans.username} <small className="text-secondary">({ans.role})</small>
+                  </p>
+                  <p>{ans.answer}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SingleForum;
+export default SingleForum
