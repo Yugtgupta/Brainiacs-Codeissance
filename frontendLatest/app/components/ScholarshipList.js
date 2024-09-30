@@ -1,6 +1,8 @@
-import React from 'react';
 
-// Sample scholarship data
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 const scholarships = [
     {
         "name": "Government of India Post-Matric Scholarship",
@@ -27,11 +29,7 @@ const scholarships = [
         "eligibility": "\u2022 Student should be disable. (40% or above) \n\u2022 Student should be residential of Maharashtra. \n\u2022 Student should be Studying in recognized University or Recognized institute. \n\u2022 The scholarship will not be applicable if the candidate fails or quit the same course in the applied course (incomplete course). \n\u2022 The Scholarship will not be applicable twice or second time if the candidate applies on the criteria of HSC/SSC/Degree. (application should be in progressive format)(only once course is allowed)  \n\u2022 Student studying in recognized institute or college out of Maharashtra but he should be residential of MH. \n\u2022 If student is in Post-Graduation from medical education field and he is not allow to do practice out of institute then he is eligible. For ex: internship or houseman ship where stipend is getting. \n\u2022 if student  arts, science & Commerce student discontinues his course & applies from professional course, technical education certificate/diploma/degree is applicable for the scholarship. But except group \u201cA\u201d the candidate fails the scholarship will not be applicable for the scholarship. \n\u2022 For Group B, C, D, and E:  If the student fails then he will not be eligible for this scheme. \n\u2022 For Group A: If the student fails 1 time, he may be eligible for this scheme, but he will not be eligible if he fails Second time during the full time of education.  \n\u2022 The candidate who taking distance education from recognized uni/Institution where non-refundable fees has to be paid by the student such students are getting annual Rs. 500/- for books and material purchase.  \n\u2022 Candidate only can apply Shahu Maharaj Merit Schol with this Scheme. cant apply for another scheme. \n\u2022 If candidate is working full time employment then he/she is not eligible. \n\u2022 If candidate is from Gov hosteller & he is not getting books and stationery from hostel then he is eligible for additional 1/3 amount of maintenance allowance allowed for hosteller. \n\u2022 The candidate residing in college/institute or any other recognized hostel & if he/she pays hostel fees (application point no 11) then the candidates maintenance allowance will be given of hosteller rates.",
         "links": "https://mahadbt.maharashtra.gov.in//SchemeData/SchemeData?str=E9DDFA703C38E51A054A8D0DAA702B64"
     },
-    {
-        "name": "Vocational Training Fee reimbursement for the students belonging to Scheduled Caste category Students",
-        "eligibility": "1. Admission taken through PPP scheme in Government Skill Development Institute or Private Institute and admitted through central Online Admission Process.2. No scholarship for Management Quota Admission3. Student should belong to Scheduled Caste Category (SC Category) and should provide caste certificate.4. Overall Family Income Limit should be Rs.8.00 lacs 5. Orphan candidate requires Recommendation Letter. 6. Candidate should not have taken any benefit for course previously from Government or Private ITI. 7. Candidate should not have taken any benefit for training program sponsored by State / Central Government / Department / Local Body / Company or Corporation. 8. Domicile of Maharashtra. 9. Admission taken for DGT, New Delhi or MSCVT approved courses. 10. Attendance criteria is mandatory. 11. Candidate need to attend each semester /annual exam. If any medical emergency then after recommendation by institute Regional Joint Director should certify or recommend. 12. Non Satisfactory educational progress due to misconduct- Failure in academic year, not fulfilling attendance criteria if found then candidate will not be eligible for scholarship.",
-        "links": "https://mahadbt.maharashtra.gov.in//SchemeData/SchemeData?str=E9DDFA703C38E51AD172C0AB7BCD9AB3"
-    },
+    
     {
         "name": "Post Matric Scholarship Scheme (Government Of India )",
         "eligibility": "Applicable for ST only * If Family Income <= 2,50,000, he will get the scholarship * Minimum 10th Pass * Back to back drop for 2 years he/she will not be allowed to fill form.",
@@ -42,11 +40,7 @@ const scholarships = [
         "eligibility": "Applicable for ST only * Family annual income limit is RS. > 2,50,000  Renewal Policy : The student have to pass the previous year examination* If student fails in any year then he is not paid the scholarship for that particular year",
         "links": "https://mahadbt.maharashtra.gov.in//SchemeData/SchemeData?str=E9DDFA703C38E51AFC085DBE43E82570"
     },
-    {
-        "name": "Vocational Education Fee Reimbursement",
-        "eligibility": "Applicable for ST only Family annual income limit is RS. > 2,50,000",
-        "links": "https://mahadbt.maharashtra.gov.in//SchemeData/SchemeData?str=E9DDFA703C38E51AC6B28ED14CE96709"
-    },
+    
     {
         "name": "Vocational Education Maintenance Allowance",
         "eligibility": "Applicable for ST caste only.* If Family Income <= 2,50,000, he will get the scholarship. If income is >2,50,000 then he will get a freeship  Renewal Policy : The student have to pass the previous year examination* If student fails in any year then he is not paid the scholarship for that particular year",
@@ -265,22 +259,128 @@ const scholarships = [
 ];
 
 const ScholarshipList = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [state, setState] = useState("");
+    const [sscPerformance, setSscPerformance] = useState("");
+    const [hscPerformance, setHscPerformance] = useState("");
+
+    const filteredScholarships = scholarships.filter(scholarship =>
+        scholarship.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const handleGetRecommendations = async () => {
+        // Logic to send user profile and get recommendations
+        const userProfile = {
+            state,
+            sscPerformance,
+            hscPerformance
+        };
+
+        try {
+            const response = await fetch('/get_recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_profile: userProfile }),
+            });
+            const data = await response.json();
+            console.log("Recommendations received:", data.recommendations);
+            // Handle the received recommendations here (e.g., set them in state)
+        } catch (error) {
+            console.error("Error fetching recommendations:", error);
+        }
+    };
+
+    const maxCardHeight = "300px"; // Set a fixed height for all cards
+
     return (
-        <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
-            <h2 className="text-2xl font-semibold text-center mb-6">Available Scholarships</h2>
-            {scholarships.map((scholarship, index) => (
-                <div key={index} className="mb-6 p-4 border rounded-lg shadow-sm hover:shadow-md transition duration-300">
-                    <h3 className="text-xl font-bold">{scholarship.name}</h3>
-                    <p className="mt-2">{scholarship.eligibility.split('\n').map((line, i) => (
-                        <span key={i} className="block">{line}</span>
-                    ))}</p>
-                    <a href={scholarship.links} className="text-blue-500 hover:underline mt-4 inline-block" target="_blank" rel="noopener noreferrer">
-                        Apply Here
-                    </a>
-                </div>
-            ))}
+        <div className="max-w-7xl mx-auto p-8 bg-gray-100 shadow-lg rounded-lg mt-10">
+            <h2 className="text-4xl font-bold text-center text-indigo-600 mb-8">All Scholarships</h2>
+
+            {/* User Profile Section */}
+            <div className="mb-6 p-6 bg-white border border-gray-300 rounded-lg shadow-sm">
+                <h3 className="text-2xl font-semibold mb-4">User Profile</h3>
+                <input
+                    type="text"
+                    placeholder="State"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    className="border border-gray-300 rounded-md p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <select
+                    value={sscPerformance}
+                    onChange={(e) => setSscPerformance(e.target.value)}
+                    className="border border-gray-300 rounded-md p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                    <option value="">Select SSC Performance</option>
+                    <option value="passed">Passed</option>
+                    <option value="failed">Failed</option>
+                </select>
+                <select
+                    value={hscPerformance}
+                    onChange={(e) => setHscPerformance(e.target.value)}
+                    className="border border-gray-300 rounded-md p-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                    <option value="">Select HSC Performance</option>
+                    <option value="passed">Passed</option>
+                    <option value="failed">Failed</option>
+                </select>
+                <button
+                    onClick={handleGetRecommendations}
+                    className="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700 transition duration-300"
+                >
+                    Get Recommendations
+                </button>
+            </div>
+
+            {/* Search Input */}
+            <div className="flex mb-4">
+                <input
+                    type="text"
+                    placeholder="Search Scholarships..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border border-gray-300 rounded-l-md p-3 flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button className="bg-indigo-600 text-white rounded-r-md p-3 flex items-center hover:bg-indigo-700 transition duration-300">
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M16.5 10.5A6 6 0 108.5 10.5a6 6 0 008 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            {/* Scholarships List */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredScholarships.map((scholarship, index) => (
+                    <div
+                        key={index}
+                        className="p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition duration-300 bg-white"
+                        style={{ height: maxCardHeight }}
+                    >
+                        <h3 className="text-xl font-bold text-indigo-600 mb-2">{scholarship.name}</h3>
+                        <p className="mt-2 text-gray-700 overflow-hidden" style={{ maxHeight: "100px", overflowY: "hidden" }}>
+                            {scholarship.eligibility.split('\n').map((line, i) => (
+                                <span key={i} className="block">{line}</span>
+                            ))}
+                        </p>
+                        {scholarship.eligibility.length > 100 && (
+                            <a href="#" className="text-indigo-500 hover:underline mt-2 inline-block" onClick={(e) => {
+                                e.preventDefault();
+                                alert(scholarship.eligibility); // Show full eligibility details in an alert (or you can implement a modal for better UX)
+                            }}>
+                                Read More
+                            </a>
+                        )}
+                        <a href={scholarship.links} className="w-full bg-indigo-600 text-white font-bold p-2 m-4 rounded-md hover:bg-indigo-700 transition duration-300" target="_blank" rel="noopener noreferrer">
+                            Apply Here
+                        </a>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
 
 export default ScholarshipList;
+
