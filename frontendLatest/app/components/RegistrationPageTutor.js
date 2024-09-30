@@ -3,7 +3,7 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
 
-const RegistrationPage = () => {
+const RegistrationPageTutor = () => {
   const [formData, setFormData] = useState({
     name: "laks",
     lName: "ch",
@@ -36,7 +36,7 @@ const RegistrationPage = () => {
 
     try {
       const response = await Axios.post(
-        "http://localhost:4000/register-student",
+        "http://localhost:4000/register-tutor",
         {
           ...formData,
         }
@@ -60,7 +60,7 @@ const RegistrationPage = () => {
   return (
     <div className="registration-page">
       <div className="form-container">
-        <h2 className="text-3xl font-bold mb-6">Student Registration</h2>
+        <h2 className="text-3xl font-bold mb-6">Mentor Registration</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-10">
             <label htmlFor="name">First Name</label>
@@ -146,7 +146,7 @@ const RegistrationPage = () => {
             />
           </div>
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="dob">Date of Birth</label>
             <input
               type="date"
@@ -156,9 +156,9 @@ const RegistrationPage = () => {
               onChange={handleChange}
               required
             />
-          </div>
+          </div> */}
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="educationLevel">Education Level</label>
             <select
               id="educationLevel"
@@ -172,9 +172,9 @@ const RegistrationPage = () => {
               <option value="Undergraduate">Undergraduate</option>
               <option value="Postgraduate">Postgraduate</option>
             </select>
-          </div>
+          </div> */}
 
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="preferredSubjects">Preferred Subjects</label>
             <input
               type="text"
@@ -184,7 +184,7 @@ const RegistrationPage = () => {
               onChange={handleChange}
               required
             />
-          </div>
+          </div> */}
 
           <button type="submit" className="submit-button">
             Register
@@ -201,4 +201,4 @@ const RegistrationPage = () => {
   );
 };
 
-export default RegistrationPage;
+export default RegistrationPageTutor;

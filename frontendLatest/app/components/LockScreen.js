@@ -3,21 +3,48 @@ import { Link } from "react-router-dom";
 
 function LockScreen() {
   return (
-    <div className="lock-screen">
-      <div className="lock-screen-container">
+    <div className="flex justify-center items-center w-full h-[100svh]">
+      <div className="flex flex-col justify-center items-center gap-4">
         <div className="header-section">
-          <h1 className="title">Welcome Back!</h1>
+          <h1 className="title text-4xl">Welcome Back!</h1>
           <p className="subtitle">Please select your role to sign in</p>
         </div>
-        <div className=" flex justify-center items-center">
-          <Link to="/register" className="role-btn mentor-btn">
-            Sign in as Mentor
+        <div className="flex justify-center items-center flex-col gap-6 w-full">
+          <Link
+            to="/register"
+            className="role-btn mentor-btn bg-red-500 w-full text-center hover:no-underline hover:text-white"
+          >
+            Register as Student
           </Link>
-          <Link to="/register" className="role-btn student-btn">
-            Sign in as Student
+          <Link
+            to="/login"
+            className="role-btn student-btn bg-red-500 w-full text-center hover:no-underline hover:text-white"
+          >
+            SignIn as Student
           </Link>
-          <Link to="/register" className="role-btn tutor-btn">
-            Sign in as Tutor
+          <Link
+            to="/register-mentor"
+            className="role-btn tutor-btn bg-emerald-600 w-full text-center hover:no-underline hover:text-white"
+          >
+            Register as Mentor
+          </Link>
+          <Link
+            to="/login-mentor"
+            className="role-btn tutor-btn bg-emerald-600  w-full text-center hover:no-underline hover:text-white"
+          >
+            SignIn as Mentor
+          </Link>
+          <Link
+            to="/register-tutor"
+            className="role-btn tutor-btn bg-orange-600 w-full text-center hover:no-underline hover:text-white"
+          >
+            Register as Tutor
+          </Link>
+          <Link
+            to="/login-tutor"
+            className="role-btn tutor-btn bg-orange-600 w-full text-center hover:no-underline hover:text-white"
+          >
+            SignIn as Tutor
           </Link>
         </div>
       </div>
