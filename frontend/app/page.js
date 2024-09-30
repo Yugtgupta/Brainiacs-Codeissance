@@ -83,10 +83,10 @@ export default function Home() {
     <>
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
-          <VidyaSaathiLandingPage />
-          <Dashboard />
+          {/* <VidyaSaathiLandingPage /> */}
+          <LockScreen />
 
-          <>
+          {/* <>
             {state.loggedIn ? (
               <h1>Logged in</h1>
             ) : (
@@ -105,7 +105,7 @@ export default function Home() {
                 </form>
               </>
             )}
-          </>
+          </> */}
         </DispatchContext.Provider>
       </StateContext.Provider>
     </>
