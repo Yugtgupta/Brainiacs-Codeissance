@@ -1,16 +1,23 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { useImmerReducer } from "use-immer"; //We will using this as the replacement to reacts use reducer function
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:4000";
 
 import DispatchContext from "./DispatchContext.js";
 import StateContext from "./StateContext.js";
-
+import { Toaster } from "react-hot-toast";
 //Our components
 import LockScreen from "./components/LockScreen.js";
-import RegistrationForm from "./components/RegisterPage.js";
+import RegistrationPage from "./components/RegistrationPage.js";
+import LoginPage from "./components/LoginPage.js";
+import Hero from "./components/Hero.js";
+import Dashboard from "./components/Dashboard.js";
+import ScholarshipPortal from "./components/ScholarshipPortal.js";
+import LandingPage from "./components/forum/LandingPage.js";
+import AddForum from "./components/forum/AddForum.js";
+import SingleForum from "./components/forum/SingleForum.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -29,7 +36,6 @@ function Main() {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
-
         draft.user = action.data.data;
         return; //Use either return or break
       case "logout":
@@ -50,12 +56,14 @@ function Main() {
       localStorage.setItem("talentSyncToken", state.user.token);
       localStorage.setItem("talentSyncRole", state.user.role);
       localStorage.setItem("talentSyncId", state.user.id);
+      console.log("LOGGED IN")
 
       //2 arguments. a= name for the piece of data we want to store. (We can name it anything). b == the data we want to store
     } else {
       localStorage.removeItem("talentSyncToken");
       localStorage.removeItem("talentSyncEmail");
       localStorage.removeItem("talentSyncId");
+      console.log("LOGGED OUT")
     }
   }, [state.loggedIn]);
   //Anytime state.loggedIn changes, the function here will run
@@ -63,25 +71,57 @@ function Main() {
   return (
     // Whatever we include in this {}, anyy child component no matter how deep the component is nested, will be able to access this value
     //In this case we are passing object
-    // <ExampleContext.Provider value={{ addFlashMessage, setLoggedIn }}>
+    // <ExampleContext.Provider v
+    // value={{ addFlashMessage, setLoggedIn }}>
 
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
+          {/* <Toaster /> */}
           {/* <Header /> */}
           {/* <FlashMessages messages={state.flashMessages} /> */}
+
+          <Toaster />
 
           <Routes>
             <Route
               path="/"
               element={state.loggedIn ? <div>Loged in</div> : <LockScreen />}
             />
+           
             <Route
-              path="/register"
+              path="/register1"
               element={
-                state.loggedIn ? <div>Logged In</div> : <RegistrationForm />
+                state.loggedIn ? <div>Logged In</div> : <RegistrationPage />
               }
             />
+            <Route
+              path="/login"
+              element={
+                state.loggedIn ? redirect("/dashboard") : <LoginPage />
+              }
+            />
+            <Route
+              path="/hero"
+              element={
+                state.loggedIn ? redirect("/dashboard") : <Hero />
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                state.loggedIn ? redirect("/dashboard") : <Dashboard />
+              }
+            />
+            <Route
+              path="/scholarship"
+              element={
+                state.loggedIn ? redirect("/dashboard") : <ScholarshipPortal />
+              }
+            />
+            <Route path="/community-forum" element={<LandingPage />} />
+            <Route path="/community-forum/add" element={<AddForum />} />
+            <Route path="/community-forum/:id" element={<SingleForum />} />
             {/* <Route path="/internships" element={state.loggedIn ? <InternshipCard /> : <HomeGuest />} />
             <Route path="/applied-internships" element={state.loggedIn ? <AppliedInternships /> : <HomeGuest />} /> */}
 
