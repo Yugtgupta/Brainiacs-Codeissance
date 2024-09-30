@@ -8,3 +8,6 @@ pandas
 faiss-cpu
 chromadb
 jq
+PyPDF2
+nltk 
+sentence-transformers

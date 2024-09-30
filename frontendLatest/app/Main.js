@@ -18,7 +18,7 @@ import ScholarshipPortal from "./components/ScholarshipPortal.js"
 import LandingPage from "./components/forum/LandingPage.js"
 import AddForum from "./components/forum/AddForum.js"
 import SingleForum from "./components/forum/SingleForum.js"
-import ScholarshipList from "./components/scholarshipList.js"
+import ScholarshipList from "./components/ScholarshipList.js"
 import Quiz from "./components/Quiz.js"
 import Recorder from "./components/Recorder.js"
 import VoiceComp from "./components/ChatUi.js"
@@ -29,6 +29,10 @@ import RegistrationPageTutor from "./components/RegistrationPageTutor.js"
 import LoginPageTutor from "./components/LoginPageTutor.js"
 import LoginPageMentor from "./components/LoginPageMentor.js"
 import ScheduleMeetTutor from "./components/ScheduleMeetTutor.js"
+import MenteeDashboard from "./components/MenteeDashboard.js"
+import ChatInterface from "./components/ChatInterface.js"
+import MentorDashboard from "./components/MentorDashboard.js"
+import VivaPractice from "./components/VivaPractice.js"
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -104,6 +108,11 @@ function Main() {
             <Route path="/dashboard" element={state.loggedIn ? <Dashboard /> : <LockScreen />} />
 
             <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />} />
+
+            <Route path="/mentee-dashboard" element={state.loggedIn ? <Dashboard /> : <MenteeDashboard />} />
+            <Route path="/chat" element={<ChatInterface />} />
+            <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+            <Route path="/viva" element={<VivaPractice />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
