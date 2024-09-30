@@ -56,14 +56,14 @@ function Main() {
       localStorage.setItem("talentSyncToken", state.user.token);
       localStorage.setItem("talentSyncRole", state.user.role);
       localStorage.setItem("talentSyncId", state.user.id);
-      console.log("LOGGED IN")
+      console.log("LOGGED IN");
 
       //2 arguments. a= name for the piece of data we want to store. (We can name it anything). b == the data we want to store
     } else {
       localStorage.removeItem("talentSyncToken");
       localStorage.removeItem("talentSyncEmail");
       localStorage.removeItem("talentSyncId");
-      console.log("LOGGED OUT")
+      console.log("LOGGED OUT");
     }
   }, [state.loggedIn]);
   //Anytime state.loggedIn changes, the function here will run
@@ -88,36 +88,28 @@ function Main() {
               path="/"
               element={state.loggedIn ? <div>Loged in</div> : <LockScreen />}
             />
-           
+
             <Route
-              path="/register1"
+              path="/register"
               element={
                 state.loggedIn ? <div>Logged In</div> : <RegistrationPage />
               }
             />
             <Route
               path="/login"
-              element={
-                state.loggedIn ? redirect("/dashboard") : <LoginPage />
-              }
+              element={state.loggedIn ? redirect("/dashboard") : <LoginPage />}
             />
             <Route
               path="/hero"
-              element={
-                state.loggedIn ? redirect("/dashboard") : <Hero />
-              }
+              element={state.loggedIn ? redirect("/dashboard") : <Hero />}
             />
             <Route
               path="/dashboard"
-              element={
-                state.loggedIn ? redirect("/dashboard") : <Dashboard />
-              }
+              element={state.loggedIn ? redirect("/dashboard") : <Dashboard />}
             />
             <Route
               path="/scholarship"
-              element={
-                state.loggedIn ? redirect("/dashboard") : <ScholarshipPortal />
-              }
+              element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
             />
             <Route path="/community-forum" element={<LandingPage />} />
             <Route path="/community-forum/add" element={<AddForum />} />
