@@ -39,6 +39,7 @@ import MenteeDashboard from "./components/MenteeDashboard.js"
 import ChatInterface from "./components/ChatInterface.js"
 import MentorDashboard from "./components/MentorDashboard.js"
 import VivaPractice from "./components/VivaPractice.js"
+import HomePage from "./components/HomePage.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -190,6 +191,7 @@ function Main() {
             <Route path="/chat" element={<ChatInterface />} />
             <Route path="/mentor-dashboard" element={<MentorDashboard />} />
             <Route path="/viva" element={<VivaPractice />} />
+            <Route path="/home" element={<HomePage />} />
 
 
 
