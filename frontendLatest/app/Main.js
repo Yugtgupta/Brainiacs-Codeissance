@@ -18,6 +18,7 @@ import ScholarshipPortal from "./components/ScholarshipPortal.js";
 import LandingPage from "./components/forum/LandingPage.js";
 import AddForum from "./components/forum/AddForum.js";
 import SingleForum from "./components/forum/SingleForum.js";
+import ScholarshipList from "./components/scholarshipList.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -109,7 +110,7 @@ function Main() {
             />
             <Route
               path="/scholarship"
-              element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
+              element={state.loggedIn ? <Dashboard /> : <ScholarshipList />}
             />
             <Route path="/community-forum" element={<LandingPage />} />
             <Route path="/community-forum/add" element={<AddForum />} />
