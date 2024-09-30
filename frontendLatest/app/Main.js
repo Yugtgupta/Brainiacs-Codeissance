@@ -39,6 +39,7 @@ import MenteeDashboard from "./components/MenteeDashboard.js";
 import ChatInterface from "./components/ChatInterface.js";
 import MentorDashboard from "./components/MentorDashboard.js";
 import VivaPractice from "./components/VivaPractice.js";
+import HomePage from "./components/HomePage.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -49,6 +50,7 @@ function Main() {
       token: localStorage.getItem("talentSyncToken"),
       username: localStorage.getItem("talentSyncEmail"),
       role: localStorage.getItem("talentSyncRole"),
+      id: localStorage.getItem("talentSyncId"),
     },
   };
 
@@ -183,7 +185,7 @@ function Main() {
 
             <Route
               path="/scholarship"
-              element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
+              element={state.loggedIn ? <Dashboard /> : <ScholarshipList />}
             />
 
             <Route
@@ -196,7 +198,7 @@ function Main() {
                 )
               }
             />
-            <Route path="/chat" element={<ChatInterface />} />
+            <Route path="/chat/:mentorId" element={<ChatInterface />} />
             <Route
               path="/dashboard/mentor-dashboard"
               element={
@@ -208,6 +210,7 @@ function Main() {
               }
             />
             <Route path="/viva" element={<VivaPractice />} />
+            <Route path="/home" element={<HomePage />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
