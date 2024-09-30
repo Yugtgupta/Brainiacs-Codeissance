@@ -3,7 +3,7 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
 
-const LoginPage = () => {
+const LoginPageTutor = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -12,19 +12,19 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  const appDispatch = useContext(DispatchContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  const appDispatch = useContext(DispatchContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await Axios.post(
-        "http://localhost:4000/login-student", // Replace with your login endpoint
+        "http://localhost:4000/login-tutor", // Replace with your login endpoint
         {
           email: formData.email,
           password: formData.password,
@@ -46,7 +46,7 @@ const LoginPage = () => {
   return (
     <div className="registration-page h-[100svh]">
       <div className="form-container">
-        <h2 className="text-3xl font-bold mb-6">Login</h2>
+        <h2 className="text-3xl font-bold mb-6">Login as Tutor</h2>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
         <form onSubmit={handleSubmit}>
@@ -89,4 +89,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginPageTutor;

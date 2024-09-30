@@ -1,14 +1,11 @@
- 
-    const Messages = require("../constants/Messages");
+const Messages = require("../constants/Messages");
 const JsonResponse = require("../helper/JsonResponse");
 const TryCatch = require("../helper/TryCatch");
 const Tutor = require("../models/Tutor");
 const jwt = require("jsonwebtoken");
 
-
 // how long a token lasts before expiring
 const tokenLasts = "365d";
-
 
 //LOGIN
 exports.apiLogin = async function (req, res) {
@@ -47,7 +44,11 @@ exports.apiRegister = async function (req, res) {
   if (result) {
     let data = {
       token: jwt.sign(
-        { _id: tutor.data._id, name: tutor.data.fName, email: tutor.data.email },
+        {
+          _id: tutor.data._id,
+          name: tutor.data.fName,
+          email: tutor.data.email,
+        },
         process.env.JWTSECRET,
         { expiresIn: tokenLasts }
       ),
@@ -77,32 +78,40 @@ exports.doesEmailExist = async function (req, res) {
   );
 };
 
+exports.getById = async function (req, res) {
+  let tutor = new Tutor();
+  let tutorDoc = await tutor.getById(req.params.id);
+  new JsonResponse(req, res).jsonSuccess(
+    tutorDoc,
+    new Messages().SUCCESSFULLY_RECEIVED
+  );
+};
 
+exports.getByEmail = async function (req, res) {
+  let tutor = new Tutor();
+  let tutorDoc = await tutor.findByEmail(req.params.email);
+  console.log(tutorDoc);
+  new JsonResponse(req, res).jsonSuccess(
+    tutorDoc,
+    new Messages().SUCCESSFULLY_RECEIVED
+  );
+};
 
-exports.getById = async function(req, res){
-  let tutor = new Tutor()
-  let tutorDoc = await tutor.getById(req.params.id)
-  new JsonResponse(req, res).jsonSuccess(tutorDoc, new Messages().SUCCESSFULLY_RECEIVED)
+exports.getAllTutors = async function (req, res) {
+  let tutor = new Tutor();
+  let tutors = await tutor.getAllTutors();
+  new JsonResponse(req, res).jsonSuccess(
+    tutors,
+    new Messages().SUCCESSFULLY_RECEIVED
+  );
+  return tutors;
+};
 
-}
-
-exports.getByEmail = async function(req, res){
-  let tutor = new Tutor()
-  let tutorDoc = await tutor.findByEmail(req.params.email)
-  console.log(tutorDoc)
-  new JsonResponse(req, res).jsonSuccess(tutorDoc, new Messages().SUCCESSFULLY_RECEIVED)
-}
-
-exports.getAllTutors = async function(req, res){
-  let tutor = new Tutor()
-  let tutors = await tutor.getAllTutors()
-  new JsonResponse(req, res).jsonSuccess(tutors, new Messages().SUCCESSFULLY_RECEIVED)
-  return tutors
-}
-
-exports.deleteById= async function(req, res){
- let tutor = new Tutor();
- await tutor.deleteById()
- new JsonResponse(req, res).jsonSuccess(true, new Messages().SUCCESSFULLY_DELETED)
-}
-    
+exports.deleteById = async function (req, res) {
+  let tutor = new Tutor();
+  await tutor.deleteById();
+  new JsonResponse(req, res).jsonSuccess(
+    true,
+    new Messages().SUCCESSFULLY_DELETED
+  );
+};
