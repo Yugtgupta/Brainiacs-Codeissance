@@ -229,6 +229,12 @@ const Dashboard = () => {
               Schedule Tutoring
             </Link>
           )}
+          {user?.role === "student" && (
+            <Link to="/dashboard/student-mentorship">Mentee</Link>
+          )}
+          {user?.role === "mentor" && (
+            <Link to="/dashboard/mentor-dashboard">Mentor</Link>
+          )}
           <button style={styles.button} onClick={logoutHandler}>
             Logout
           </button>
