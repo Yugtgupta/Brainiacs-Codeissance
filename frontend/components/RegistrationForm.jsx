@@ -32,8 +32,7 @@ const RegistrationForm = () => {
 
     try {
       const response = await Axios.post('http://localhost:4000/register-student', {
-        email: formData.email,
-        password: formData.password
+        ...formData,
       });
 
       if (response.status === 200) {

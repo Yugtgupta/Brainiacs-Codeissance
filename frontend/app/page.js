@@ -110,8 +110,8 @@ export default function Home() {
     <>
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
-          {/* <Header /> */}
-          <>
+          <Header />
+          {/* <>
             {state.loggedIn ? (
               <>
                 <h1>Logged in</h1>
@@ -120,40 +120,9 @@ export default function Home() {
             ) : (
               <>
                 <RegistrationForm />
-                {/* <form onSubmit={loginHandler}>
-                  <input
-                    type="email"
-                    placeholder="Email..."
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password..."
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button type="submit">Login</button>
-                </form>
-                <h2>Register</h2>
-                <form onSubmit={registerHandler}>
-                  <input
-                    type="email"
-                    placeholder="Email..."
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password..."
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button type="submit">Register</button>
-                </form> */}
               </>
             )}
-          </>
+          </> */}
         </DispatchContext.Provider>
       </StateContext.Provider>
     </>
