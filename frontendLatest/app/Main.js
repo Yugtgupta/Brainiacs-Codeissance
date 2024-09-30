@@ -1,6 +1,12 @@
 import React, { useState, useReducer, useEffect } from "react";
 import { useImmerReducer } from "use-immer"; //We will using this as the replacement to reacts use reducer function
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  redirect,
+  Navigate,
+} from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:4000";
@@ -18,6 +24,12 @@ import ScholarshipPortal from "./components/ScholarshipPortal.js";
 import LandingPage from "./components/forum/LandingPage.js";
 import AddForum from "./components/forum/AddForum.js";
 import SingleForum from "./components/forum/SingleForum.js";
+import RegistrationPageMentor from "./components/RegistrationPageMentor.js";
+import RoutesPage from "./components/RoutesPage.js";
+import RegistrationPageTutor from "./components/RegistrationPageTutor.js";
+import LoginPageTutor from "./components/LoginPageTutor.js";
+import LoginPageMentor from "./components/LoginPageMentor.js";
+import ScheduleMeetTutor from "./components/ScheduleMeetTutor.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -27,9 +39,8 @@ function Main() {
     user: {
       token: localStorage.getItem("talentSyncToken"),
       username: localStorage.getItem("talentSyncEmail"),
+      role: localStorage.getItem("talentSyncRole"),
     },
-    //Now we wil have this user object that will be available in our globval or app wide state.
-    //Any other component that needs to acces this data, it no longer needs to access it from the broswer, but will be avaialble from within the state.
   };
 
   function ourReducer(draft, action) {
@@ -51,29 +62,19 @@ function Main() {
 
   useEffect(() => {
     if (state.loggedIn) {
-      //if true
-      //localStorage, has nothing to do with react, but with web browser
       localStorage.setItem("talentSyncToken", state.user.token);
       localStorage.setItem("talentSyncRole", state.user.role);
       localStorage.setItem("talentSyncId", state.user.id);
       console.log("LOGGED IN");
-
-      //2 arguments. a= name for the piece of data we want to store. (We can name it anything). b == the data we want to store
     } else {
       localStorage.removeItem("talentSyncToken");
       localStorage.removeItem("talentSyncEmail");
       localStorage.removeItem("talentSyncId");
       console.log("LOGGED OUT");
     }
-  }, [state.loggedIn]);
-  //Anytime state.loggedIn changes, the function here will run
+  }, [state.loggedIn, state.user]);
 
   return (
-    // Whatever we include in this {}, anyy child component no matter how deep the component is nested, will be able to access this value
-    //In this case we are passing object
-    // <ExampleContext.Provider v
-    // value={{ addFlashMessage, setLoggedIn }}>
-
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
@@ -82,7 +83,6 @@ function Main() {
           {/* <FlashMessages messages={state.flashMessages} /> */}
 
           <Toaster />
-
           <Routes>
             <Route
               path="/"
@@ -92,33 +92,102 @@ function Main() {
             <Route
               path="/register"
               element={
-                state.loggedIn ? <div>Logged In</div> : <RegistrationPage />
+                state.loggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <RegistrationPage />
+                )
               }
             />
+
+            <Route
+              path="/register-mentor"
+              element={
+                state.loggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <RegistrationPageMentor />
+                )
+              }
+            />
+
+            <Route
+              path="/register-tutor"
+              element={
+                state.loggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <RegistrationPageTutor />
+                )
+              }
+            />
+
             <Route
               path="/login"
-              element={state.loggedIn ? redirect("/dashboard") : <LoginPage />}
+              element={
+                state.loggedIn ? <Navigate to="/dashboard" /> : <LoginPage />
+              }
             />
+
+            <Route
+              path="/login-mentor"
+              element={
+                state.loggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <LoginPageMentor />
+                )
+              }
+            />
+
+            <Route
+              path="/login-tutor"
+              element={
+                state.loggedIn ? (
+                  <Navigate to="/dashboard" />
+                ) : (
+                  <LoginPageTutor />
+                )
+              }
+            />
+
+            <Route
+              path="/dashboard/schedule-meet"
+              element={
+                state.loggedIn && state?.user?.role === "tutor" ? (
+                  <ScheduleMeetTutor />
+                ) : (
+                  <Navigate to="/dashboard" />
+                )
+              }
+            />
+
             <Route
               path="/hero"
-              element={state.loggedIn ? redirect("/dashboard") : <Hero />}
+              element={state.loggedIn ? console.log("LOGGED IN") : <Hero />}
             />
+
             <Route
               path="/dashboard"
-              element={state.loggedIn ? redirect("/dashboard") : <Dashboard />}
+              element={state.loggedIn ? <Dashboard /> : <LockScreen />}
             />
+
             <Route
               path="/scholarship"
               element={state.loggedIn ? <Dashboard /> : <ScholarshipPortal />}
             />
+
             <Route path="/community-forum" element={<LandingPage />} />
+
             <Route path="/community-forum/add" element={<AddForum />} />
+
             <Route path="/community-forum/:id" element={<SingleForum />} />
             {/* <Route path="/internships" element={state.loggedIn ? <InternshipCard /> : <HomeGuest />} />
             <Route path="/applied-internships" element={state.loggedIn ? <AppliedInternships /> : <HomeGuest />} /> */}
 
             {/* PAssing addFlashMessage() funcytion to createPost using pprops */}
           </Routes>
+          {/* <RoutesPage /> */}
           {/* <Footer /> */}
         </BrowserRouter>
       </DispatchContext.Provider>
