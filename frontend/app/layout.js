@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import StateContext from "@/context/StateContext";
+import DispatchContext from "@/context/DispatchContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
