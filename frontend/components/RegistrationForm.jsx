@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import {axios} from 'axios';
+import Axios from 'axios';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -31,10 +31,13 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://localhost:4000/register-student', formData);
+      const response = await Axios.post('http://localhost:4000/register-student', {
+        ...formData,
+      });
 
       if (response.status === 200) {
         setSuccessMessage('Registration successful!');
+        console.log()
         setErrorMessage('');
       }
     } catch (error) {
