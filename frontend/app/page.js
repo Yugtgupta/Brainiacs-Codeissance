@@ -1,14 +1,17 @@
 "use client"
 
+import Dashboard from "@/components/Dashboard"
 import Header from "@/components/Header"
+import LandingPage from "@/components/LandingPage"
+import LockScreen from "@/components/LockScreen"
+import VidyaSaathiLandingPage from "@/components/VidyaSaarthiLandingPage"
+import DispatchContext from "@/context/DispatchContext"
+import StateContext from "@/context/StateContext"
 import ourReducer from "@/reducers/ourReducer"
+import Axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { useImmerReducer } from "use-immer"
-import Axios from "axios"
-import StateContext from "@/context/StateContext"
-import DispatchContext from "@/context/DispatchContext"
-import LandingPage from "@/components/LandingPage"
-import VidyaSaathiLandingPage from "@/components/VidyaSaarthiLandingPage"
+
 Axios.defaults.baseURL = "http://localhost:4000"
 
 export default function Home() {
@@ -80,9 +83,9 @@ export default function Home() {
     <>
       <StateContext.Provider value={state}>
         <DispatchContext.Provider value={dispatch}>
-          <Header />
-          <LandingPage />
           <VidyaSaathiLandingPage />
+          <Dashboard />
+
           <>
             {state.loggedIn ? (
               <h1>Logged in</h1>
