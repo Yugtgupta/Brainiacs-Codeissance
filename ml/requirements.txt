@@ -11,3 +11,6 @@ jq
 PyPDF2
 nltk 
 sentence-transformers
+Flask
+youtube_search
+youtube_transcript_api
