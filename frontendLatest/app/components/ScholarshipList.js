@@ -1,7 +1,9 @@
 
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import StateContext from "../StateContext";
+
 
 const scholarships = [
     {
@@ -263,33 +265,73 @@ const ScholarshipList = () => {
     const [state, setState] = useState("");
     const [sscPerformance, setSscPerformance] = useState("");
     const [hscPerformance, setHscPerformance] = useState("");
-
+    const {user} = useContext(StateContext);
     const filteredScholarships = scholarships.filter(scholarship =>
         scholarship.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleGetRecommendations = async () => {
         // Logic to send user profile and get recommendations
-        const userProfile = {
-            state,
-            sscPerformance,
-            hscPerformance
-        };
-
+        // const userProfile = {
+        //     state,
+        //     sscPerformance,
+        //     hscPerformance
+        // };
+console.log("HERE")
+       
         try {
-            const response = await fetch('/get_recommendations', {
-                method: 'POST',
+            console.log(user.token)
+            const response = await axios.get(`/student/get-by-id/${user.id}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ user_profile: userProfile }),
+                    Authorization: `Bearer' ${user.token}`,
+
+                    "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
+                }
+              
             });
-            const data = await response.json();
-            console.log("Recommendations received:", data.recommendations);
+            const data = await response.data.data;
+
+            const llmData = `
+             I am a ${data.caste} student from Maharashtra. 
+My family's annual income is ${data.parentAnualIncome}. 
+I have passed SSC and am looking for scholarship opportunities.
+            `
+            console.log("Recommendations received:", data);
+
+
+            const pyResponse = await fetch('http://127.0.0.1:5000/get_recommendations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ user_profile: llmData }),
+                    });
+                    const pydata = await pyResponse.json();
+                    console.log("Recommendations received:", pydata.recommendations);
+
+
             // Handle the received recommendations here (e.g., set them in state)
         } catch (error) {
             console.error("Error fetching recommendations:", error);
         }
+
+
+        // try {
+        //     const response = await fetch('http://127.0.0.1:5000/get_recommendations', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ user_profile: userProfile }),
+        //     });
+        //     const data = await response.json();
+        //     console.log("Recommendations received:", data.recommendations);
+        //     // Handle the received recommendations here (e.g., set them in state)
+        // } catch (error) {
+        //     console.error("Error fetching recommendations:", error);
+        // }
     };
 
     const maxCardHeight = "300px"; // Set a fixed height for all cards

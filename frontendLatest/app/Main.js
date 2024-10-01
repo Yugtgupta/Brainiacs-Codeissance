@@ -185,7 +185,7 @@ function Main() {
 
             <Route
               path="/scholarship"
-              element={state.loggedIn ? <Dashboard /> : <ScholarshipList />}
+              element={state.loggedIn ?  <ScholarshipList /> :  <Dashboard />}
             />
 
             <Route
