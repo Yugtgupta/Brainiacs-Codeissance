@@ -245,12 +245,13 @@ const Dashboard = () => {
             Continue Learning
           </button>
           {/* <button style={styles.button}>Schedule a Session</button> */}
-          <button
+          <Link
+            to="/scholarship"
             style={styles.button}
             className="hover:bg-transparent hover:underline"
           >
             Find Scholarships
-          </button>
+          </Link>
           {user?.role === "tutor" && (
             <Link
               to="/dashboard/schedule-meet"
