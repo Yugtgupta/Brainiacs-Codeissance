@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from scholarship_recommendation import recommend_scholarships
 from flask import Flask, jsonify, request 
 from notes_from_pdf import generate_notes_from_pdf
@@ -10,7 +10,26 @@ from generic_chat import generate_study_response
 from yt_video_notes import generate_notes_from_yt_in
 app = Flask(__name__)
 CORS(app)
-CORS(app, origins=["http://localhost:3000"])
+# CORS(app, origins=["http://localhost:3000"])
+# app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+
+import warnings
+
+# To ignore all warnings
+warnings.filterwarnings("ignore")
+
+# To filter specific warnings, for example, DeprecationWarning
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+# You can also reset the warning filters
+warnings.resetwarnings()
+
+# Example of suppressing specific messages
+warnings.filterwarnings("ignore", message=".*certain message pattern.*")
+
+
 
 @app.route('/')
 def home():
@@ -39,7 +58,7 @@ def generate_notes():
 
 @app.route('/chatbot-ml', methods=["POST"])
 def super_agent():
-    data = request.get_json()['input']
+    data = request.get_json()['text']
     type = super_agent_function(data)
     if type.lower() == "roadmap generator":
         roadmap_output = generate_roadmap(data)

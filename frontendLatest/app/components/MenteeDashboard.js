@@ -4,12 +4,126 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import StateContext from "../StateContext";
 import { Link } from "react-router-dom";
+import DispatchContext from "../DispatchContext";
+import toast from "react-hot-toast";
 const MenteeDashboard = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
   const [suggestedMentors, setSuggestedMentors] = useState([]);
   const [studentMentor, setStudentMentor] = useState(null);
   const { user } = useContext(StateContext);
+
+  const appDispatch = useContext(DispatchContext);
+  const styles = {
+    dashboard: {
+      fontFamily: "Arial, sans-serif",
+      maxWidth: "1200px",
+      margin: "0 auto",
+      padding: "20px",
+    },
+    header: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "20px",
+    },
+    greeting: {
+      fontSize: "24px",
+      fontWeight: "bold",
+      color: "#2c3e50",
+    },
+    quickActions: {
+      display: "flex",
+      gap: "10px",
+    },
+    button: {
+      padding: "10px 15px",
+      color: "black",
+      fontWight: "600",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      transition: "background-color 0.3s",
+    },
+    section: {
+      backgroundColor: "white",
+      padding: "20px",
+      borderRadius: "10px",
+      marginBottom: "20px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    },
+    sectionTitle: {
+      fontSize: "20px",
+      fontWeight: "bold",
+      marginBottom: "15px",
+      color: "#34495e",
+    },
+    progressBar: {
+      height: "20px",
+      backgroundColor: "#ecf0f1",
+      borderRadius: "10px",
+      overflow: "hidden",
+      marginBottom: "10px",
+    },
+    progressFill: {
+      height: "100%",
+      backgroundColor: "#2ecc71",
+      transition: "width 0.5s ease-in-out",
+    },
+    calendar: {
+      display: "grid",
+      gridTemplateColumns: "repeat(7, 1fr)",
+      gap: "5px",
+    },
+    calendarDay: {
+      padding: "10px",
+      textAlign: "center",
+      backgroundColor: "#e0e0e0",
+      borderRadius: "5px",
+    },
+    mentorSection: {
+      display: "flex",
+      justifyContent: "space-between",
+    },
+    mentorInfo: {
+      flex: 1,
+      marginRight: "20px",
+    },
+    mentorChat: {
+      flex: 2,
+      backgroundColor: "#f9f9f9",
+      padding: "10px",
+      borderRadius: "5px",
+      height: "200px",
+      overflowY: "auto",
+    },
+    scholarshipCard: {
+      backgroundColor: "#f1f8e9",
+      padding: "10px",
+      marginBottom: "10px",
+      borderRadius: "5px",
+    },
+    communityPost: {
+      backgroundColor: "#e3f2fd",
+      padding: "10px",
+      marginBottom: "10px",
+      borderRadius: "5px",
+    },
+    loadingScreen: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+      fontSize: "24px",
+    },
+  };
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
+  };
 
   const upcomingSessions = [
     {
@@ -42,6 +156,11 @@ const MenteeDashboard = () => {
       watchedStatus: false,
     },
   ];
+  const logoutHandler = () => {
+    appDispatch({ type: "logout" });
+    toast.success("Logged out successfully");
+    navigate("/");
+  };
 
   // const suggestedMentors = [
   //   {
@@ -122,6 +241,9 @@ const MenteeDashboard = () => {
         const response = await Axios.get(`/mentor/get-all/${user.id}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
+            "Cache-Control": "no-cache", // This will bypass the cache
+            Pragma: "no-cache", // Additional header to ensure cache bypass
+            Expires: "0", // Forces the request to be fresh
           },
         });
         console.log(response.data.data);
@@ -138,7 +260,7 @@ const MenteeDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-100 p-8">
       {/* Dashboard Header */}
-      <header className="mb-8">
+      {/* <header className="mb-8">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-4 transition duration-300 ease-in-out hover:text-blue-600">
           Student Mentorship
         </h1>
@@ -146,6 +268,61 @@ const MenteeDashboard = () => {
           Welcome back! Check out your upcoming sessions and explore new
           mentors.
         </p>
+      </header> */}
+      <header style={styles.header}>
+        <Link
+          to="/dashboard"
+          style={styles.greeting}
+        >{`${getGreeting()}, User`}</Link>
+        <div style={styles.quickActions}>
+          <button
+            style={styles.button}
+            className="hover:bg-transparent hover:underline"
+          >
+            Continue Learning
+          </button>
+          {/* <button style={styles.button}>Schedule a Session</button> */}
+          <button
+            style={styles.button}
+            className="hover:bg-transparent hover:underline"
+          >
+            Find Scholarships
+          </button>
+          {user?.role === "tutor" && (
+            <Link
+              to="/dashboard/schedule-meet"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
+              Schedule Tutoring
+            </Link>
+          )}
+          {user?.role === "student" && (
+            <Link
+              to="/dashboard/student-mentorship"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
+              Mentee
+            </Link>
+          )}
+          {user?.role === "mentor" && (
+            <Link
+              to="/dashboard/mentor-dashboard"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
+              Mentor
+            </Link>
+          )}
+          <button
+            style={styles.button}
+            onClick={logoutHandler}
+            className="hover:bg-transparent hover:underline"
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       {/* Upcoming Sessions Section */}
