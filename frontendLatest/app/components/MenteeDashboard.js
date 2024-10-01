@@ -1,6 +1,7 @@
 import Axios from "axios"
 import React, { useState } from "react"
 import { useContext } from "react"
+import { useEffect } from "react"
 import StateContext from "../StateContext"
 const MenteeDashboard = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
@@ -84,12 +85,12 @@ const MenteeDashboard = () => {
   useEffect(() => {
     const fetchDataFromDB = async () => {
       try {
-        const response = await Axios.get("/fetch-all-mentors", {
+        const response = await Axios.get(`/mentor/get-all/${user.id}`, {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
         })
-        console.log(response)
+        console.log(response.data.data)
       } catch (error) {
         console.log(error)
       }
