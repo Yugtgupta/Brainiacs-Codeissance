@@ -37,11 +37,12 @@ def home():
 
 @app.route('/get_recommendations', methods=['POST'])
 def get_recommendations():
+    print("hit")
     # Assume user profile comes as JSON in the request body
     user_profile = request.json.get('user_profile', '')
     # Call the method from scholarship_recommendation.py
     recommendations = recommend_scholarships(user_profile)
-    # Return recommendations as JSON response
+    # Return recommendations as an array
     return jsonify({"recommendations": recommendations})
 
 @app.route('/generate_notes', methods=["POST"])
