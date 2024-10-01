@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import {axios} from 'axios';
 
 const Chatbot = () => {
     const [input, setInput] = useState('');
@@ -20,11 +20,27 @@ const Chatbot = () => {
         setInput('');
 
         try {
-            const response = await axios.post('/chatbot-ml', { input });
-            const { output } = response.data;
-
+            console.log('Sending request to chatbot API...');
+            const text = input;
+            const response = await fetch('http://127.0.0.1:5000/chatbot-ml', {
+                method: 'POST',  // 'POST' should be in quotes
+                headers: {
+                  
+                    'Content-Type': 'application/json'  // Set the appropriate content type
+                },
+                body: JSON.stringify({ text })  // Send 'text' as the request body in JSON format
+            });
+            
+            // const data = await response.json();  // Parse the response to JSON
+            // console.log(data);
+            //  response = await fetch('https://127.0.0.1:5000/chatbot-ml', { 
+            //     'method' : POST,
+            //     input 
+            // });
+            const  output  =await response.json();
+console.log(output)
             // Update chat history with the bot's response
-            setChatHistory((prev) => [...prev, { sender: 'bot', text: output }]);
+            setChatHistory((prev) => [...prev, { sender: 'bot', text: output.output }]);
         } catch (error) {
             console.error('Error fetching response:', error);
             setChatHistory((prev) => [...prev, { sender: 'bot', text: 'Sorry, something went wrong. Please try again.' }]);
