@@ -5,7 +5,7 @@ const TryCatch = require("./helper/TryCatch")
 const Messages = require("./constants/Messages")
 const LlmHelper = require("./helper/LlmHelper")
 //imports here
-const chatController = require('./controllers/chatController');
+const chatController = require("./controllers/chatController")
 const answerController = require("./controllers/answerController")
 
 const questionController = require("./controllers/questionController")
@@ -18,9 +18,8 @@ const studentController = require("./controllers/studentController")
 
 //code here
 
-    router.post('/send-chat', AuthHelper.verifyToken, new TryCatch(chatController.sendChat).tryCatchGlobe())
-    router.get('/get-my-chat/:id/:chatContactId',  AuthHelper.verifyToken, new TryCatch(chatController.getChatConvo).tryCatchGlobe())
-    
+router.post("/send-chat", AuthHelper.verifyToken, new TryCatch(chatController.sendChat).tryCatchGlobe())
+router.get("/get-my-chat/:id/:chatContactId", AuthHelper.verifyToken, new TryCatch(chatController.getChatConvo).tryCatchGlobe())
 
 //Entity - Answer --start
 
@@ -49,7 +48,7 @@ router.post("/login-mentor", new TryCatch(mentorController.apiLogin).tryCatchGlo
 router.post("/mentor/does-email-exists", AuthHelper.verifyToken, new TryCatch(mentorController.doesEmailExist).tryCatchGlobe())
 router.get("/mentor/get-by-id/:id", AuthHelper.verifyToken, new TryCatch(mentorController.getById).tryCatchGlobe())
 router.get("/mentor/get-by-email/:email", AuthHelper.verifyToken, new TryCatch(mentorController.getByEmail).tryCatchGlobe())
-router.get("/mentor/get-all", AuthHelper.verifyToken, new TryCatch(mentorController.getAllMentors).tryCatchGlobe())
+router.get("/mentor/get-all/:studId", AuthHelper.verifyToken, new TryCatch(mentorController.getAllMentors).tryCatchGlobe())
 router.delete("/mentor/delete-by-id/:id", AuthHelper.verifyToken, new TryCatch(mentorController.deleteById).tryCatchGlobe())
 //Entity - Mentor - End
 
@@ -77,6 +76,8 @@ router.get("/student/get-by-id/:id", AuthHelper.verifyToken, new TryCatch(studen
 router.get("/student/get-by-email/:email", AuthHelper.verifyToken, new TryCatch(studentController.getByEmail).tryCatchGlobe())
 router.get("/student/get-all", AuthHelper.verifyToken, new TryCatch(studentController.getAllStudents).tryCatchGlobe())
 router.delete("/student/delete-by-id/:id", AuthHelper.verifyToken, new TryCatch(studentController.deleteById).tryCatchGlobe())
+router.post("/student/connect-mentor/:studId", AuthHelper.verifyToken, new TryCatch(studentController.connectMentor).tryCatchGlobe())
+
 //Entity - Student - End
 
 //LLm route

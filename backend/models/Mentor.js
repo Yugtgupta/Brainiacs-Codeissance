@@ -23,7 +23,7 @@ Mentor.prototype.cleanUp = function () {
     role: "mentor",
     createdAt: new Date(),
     //predefined end
-    skils: this.data.skils,
+    skills: this.data.skills,
     expertise: this.data.expertise,
     bio: this.data.bio,
     qualification: this.data.qualification
