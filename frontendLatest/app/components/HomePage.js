@@ -28,14 +28,19 @@ export default function HomePage() {
         <h2 className="text-5xl font-extrabold leading-tight animate-fadeInUp">Empower Your Learning Journey</h2>
         <p className="max-w-xl text-lg text-white/80 animate-fadeInUp delay-300">Connect with top mentors, attend virtual classes, and access scholarship opportunities with ease.</p>
         <button
-          className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out"
+          className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:text-indigo-800 hover:scale-105 duration-300 ease-in-out"
         >
           Get Started
         </button>
       </div>
 
       {/* Floating Dots for extra effect */}
-      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-32 right-32 opacity-80 blur-sm animate-bounce" />
+      {/* <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-32 right-32 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-orange-400 rounded-full top-78 right-16 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-44 right-20 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-orange-400 rounded-full top-60 right-48 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-52 right-60 opacity-80 blur-sm animate-bounce" /> */}
+
       <div className="absolute w-16 h-16 bg-blue-300 rounded-full bottom-28 left-40 opacity-80 blur-sm animate-bounce delay-2000" />
 
       {/* Divider with smooth gradient transition */}
@@ -89,7 +94,7 @@ export default function HomePage() {
           Become a part of our thriving community and unlock your potential with personalized learning paths, expert guidance, and collaborative opportunities.
         </p>
         <div className="flex justify-center">
-          <button className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+          <button className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:text-indigo-800 hover:scale-105 duration-300 ease-in-out">
             Sign Up Now
           </button>
         </div>

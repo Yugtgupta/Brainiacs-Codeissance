@@ -40,6 +40,8 @@ import ChatInterface from "./components/ChatInterface.js";
 import MentorDashboard from "./components/MentorDashboard.js";
 import VivaPractice from "./components/VivaPractice.js";
 import HomePage from "./components/HomePage.js";
+import NotesGeneration from "./components/Notesgeneration.js";
+import Chatbot from "./components/Chatbot.js";
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -211,6 +213,8 @@ function Main() {
             />
             <Route path="/viva" element={<VivaPractice />} />
             <Route path="/home" element={<HomePage />} />
+            <Route path="/notes" element={<NotesGeneration />} />
+            <Route path="/chat-bot" element={<Chatbot />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
