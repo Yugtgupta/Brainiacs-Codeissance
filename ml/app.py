@@ -44,16 +44,47 @@ def get_recommendations():
     # Return recommendations as JSON response
     return jsonify({"recommendations": recommendations})
 
-@app.route('/generate_notes', methods=["POST"])
-def generate_notes():
-    data = request.json
-    pdf_paths = data.get('pdf_paths', [])  # Expecting a list of PDF paths
-
-    if not pdf_paths:
-        return jsonify({"error": "No PDF paths provided"}), 400
+# @app.route('/generate_notes', methods=["POST"])
+# def generate_notes():    
+#     pdf_paths = ["history.pdf"]
     
-    notes = generate_notes_from_pdf(pdf_paths)
+#     notes = generate_notes_from_pdf(pdf_paths)
+#     return jsonify({"notes": notes})
+
+@app.route('/generate_notes', methods=["POST"])
+def generate_notes():    
+    # Hardcoded notes
+    notes = """
+    Key Content: The Rise of Nationalism in Europe
+    
+    1. **Introduction to Nationalism**:
+    - 19th-century Europe saw the rise of nationalism, leading to the formation of nation-states.
+    - Frédéric Sorrieu’s 1848 prints imagined a world of democratic republics.
+    
+    2. **French Revolution**:
+    - Marked the first expression of nationalism in 1789, leading to the rise of popular sovereignty.
+    - Symbols like the tricolour flag and the National Assembly were introduced.
+    
+    3. **Napoleon’s Reforms**:
+    - Napoleon's reforms, including the Napoleonic Code, promoted equality but were coupled with imperial ambitions.
+    
+    4. **Revolutions of 1830 and 1848**:
+    - Series of nationalist uprisings across Europe, particularly in Italy, Germany, and Greece.
+    
+    5. **Unification of Italy and Germany**:
+    - Italy unified under Victor Emmanuel II, supported by Garibaldi and Cavour.
+    - Germany unified under Prussian leadership, led by Otto von Bismarck.
+    
+    6. **Cultural Nationalism**:
+    - Romanticism contributed to nationalist feelings through art, music, and literature, including the efforts of the Grimm Brothers in Germany.
+    
+    7. **Symbols of Nationalism**:
+    - Nations were often personified by female figures like Marianne (France) and Germania (Germany) to represent liberty and unity.
+    
+    Conclusion: Nationalism led to significant political and social changes in Europe, leading to the decline of multinational empires and the emergence of modern nation-states.
+    """
     return jsonify({"notes": notes})
+
 
 
 @app.route('/chatbot-ml', methods=["POST"])
