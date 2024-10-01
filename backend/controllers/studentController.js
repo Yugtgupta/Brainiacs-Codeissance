@@ -3,7 +3,7 @@ const JsonResponse = require("../helper/JsonResponse")
 const TryCatch = require("../helper/TryCatch")
 const Student = require("../models/Student")
 const jwt = require("jsonwebtoken")
-
+const WhatsappNotification = require("../helper/WhatsappNotification")
 // how long a token lasts before expiring
 const tokenLasts = "365d"
 
@@ -92,5 +92,7 @@ exports.deleteById = async function (req, res) {
 exports.connectMentor = async function (req, res) {
   let student = new Student()
   student.connectMentor(req.params.studId, req.body.mentorId)
+  const notification = new WhatsappNotification("919821691991", "A new student has been added under your guidance")
+  notification.sendWhatsappNotification()
   new JsonResponse(req, res).jsonSuccess(true, new Messages().SUCCESSFULLY_DELETED)
 }

@@ -87,7 +87,10 @@ const MenteeDashboard = () => {
       try {
         const response = await Axios.get(`/mentor/get-all/${user.id}`, {
           headers: {
-            Authorization: `Bearer ${user.token}`
+            Authorization: `Bearer ${user.token}`,
+            "Cache-Control": "no-cache", // This will bypass the cache
+            Pragma: "no-cache", // Additional header to ensure cache bypass
+            Expires: "0" // Forces the request to be fresh
           }
         })
         console.log(response.data.data)
