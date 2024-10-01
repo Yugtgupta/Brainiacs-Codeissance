@@ -16,6 +16,7 @@ import DispatchContext from "../DispatchContext";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import StateContext from "../StateContext";
+import { Axios } from "axios";
 
 // Simulated API call to fetch user data
 const fetchUserData = () => {
@@ -198,6 +199,23 @@ const Dashboard = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   const fetchUserFromDB = async () => {
+  //     // let userrole = user?.role === "student" ? "student";
+  //     const userDataResponse = await Axios.get(
+  //       `/${user.role}/get-by-id/${user?.id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${user?.token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("USER", userDataResponse);
+  //   };
+
+  //   fetchUserFromDB();
+  // }, []);
+
   if (loading) {
     return <div style={styles.loadingScreen}>Loading your dashboard...</div>;
   }
@@ -218,7 +236,7 @@ const Dashboard = () => {
   return (
     <div style={styles.dashboard}>
       <header style={styles.header}>
-        <h1 style={styles.greeting}>{`${getGreeting()}, ${userData.name}!`}</h1>
+        <h1 style={styles.greeting}>{`${getGreeting()}, User`}</h1>
         <div style={styles.quickActions}>
           <button
             style={styles.button}
@@ -270,33 +288,46 @@ const Dashboard = () => {
         </div>
       </header>
 
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Learning Progress</h2>
-        {userData.courses.map((course) => (
-          <div key={course.name}>
-            <p>{course.name}</p>
-            <div style={styles.progressBar}>
-              <div
-                style={{ ...styles.progressFill, width: `${course.progress}%` }}
-              />
-            </div>
-          </div>
-        ))}
-      </section>
+      <div>
+        <h2 className="text-3xl font-semibold mt-4 mb-2">
+          {user?.role.charAt(0).toUpperCase() + user?.role.slice(1)} Dashboard
+        </h2>
+      </div>
 
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Performance Overview</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={userData.performanceData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="score" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
-      </section>
+      {user?.role === "student" && (
+        <section style={styles.section}>
+          <h2 style={styles.sectionTitle}>Learning Progress</h2>
+          {userData.courses.map((course) => (
+            <div key={course.name}>
+              <p>{course.name}</p>
+              <div style={styles.progressBar}>
+                <div
+                  style={{
+                    ...styles.progressFill,
+                    width: `${course.progress}%`,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {user?.role === "student" && (
+        <section style={styles.section}>
+          <h2 style={styles.sectionTitle}>Performance Overview</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={userData.performanceData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="score" stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+        </section>
+      )}
 
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Upcoming Sessions</h2>
@@ -313,16 +344,18 @@ const Dashboard = () => {
         </div>
       </section>
 
-      <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Scholarship Opportunities</h2>
-        {userData.scholarships.map((scholarship, index) => (
-          <div key={index} style={styles.scholarshipCard}>
-            <h3>{scholarship.name}</h3>
-            <p>Deadline: {scholarship.deadline}</p>
-            <button style={styles.button}>Apply Now</button>
-          </div>
-        ))}
-      </section>
+      {user?.role === "student" && (
+        <section style={styles.section}>
+          <h2 style={styles.sectionTitle}>Scholarship Opportunities</h2>
+          {userData.scholarships.map((scholarship, index) => (
+            <div key={index} style={styles.scholarshipCard}>
+              <h3>{scholarship.name}</h3>
+              <p>Deadline: {scholarship.deadline}</p>
+              <button style={styles.button}>Apply Now</button>
+            </div>
+          ))}
+        </section>
+      )}
 
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Mentorship</h2>
