@@ -7,7 +7,6 @@ const MenteeDashboard = () => {
   const [currentSession, setCurrentSession] = useState(null)
   const { user } = useContext(StateContext)
 
-  // Mock data (replace with actual data fetching logic)
   const upcomingSessions = [
     {
       id: 1,
@@ -81,6 +80,23 @@ const MenteeDashboard = () => {
       }
     )
   }
+
+  useEffect(() => {
+    const fetchDataFromDB = async () => {
+      try {
+        const response = await Axios.get("/fetch-all-mentors", {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchDataFromDB()
+  }, [])
 
   return (
     <div className="min-h-screen bg-slate-100 p-8">
