@@ -6,7 +6,7 @@ from super_agent import super_agent_function
 from roadmap_generator import generate_roadmap
 from schedule_generator import generate_schedule
 from generic_chat import generate_study_response
-
+from yt_video_notes import generate_notes_from_yt_in
 app = Flask(__name__)
 
 @app.route('/')
@@ -48,6 +48,12 @@ def super_agent():
         generic_output = generate_study_response(data)
         return jsonify({"output": generic_output})
 
+@app.route('/generate_notes_from_yt', methods=["GET"])
+def generate_notes_from_yt():
+    youtube_video_url = "https://www.youtube.com/watch?v=oW7USk5x4do"
+    subject = "Chemistry"
+    notes = generate_notes_from_yt_in(youtube_video_url, subject)
+    return jsonify(notes)
 
 if __name__ == '__main__':
     app.run(debug=True)
