@@ -89,7 +89,9 @@ function Main() {
 
           <Toaster />
           <Routes>
-            <Route path="/" element={state.loggedIn ? <div>Loged in</div> : <LockScreen />} />
+            <Route path="/" element={<HomePage />} />
+
+            <Route path="/auth" element={state.loggedIn ? <Navigate to="/dashboard" /> : <LockScreen />} />
 
             <Route path="/register" element={state.loggedIn ? <Navigate to="/dashboard" /> : <RegistrationPage />} />
 
@@ -115,7 +117,6 @@ function Main() {
             <Route path="/chat/:mentorId" element={<ChatInterface />} />
             <Route path="/dashboard/mentor-dashboard" element={state.loggedIn && state?.user?.role === "mentor" ? <MentorDashboard /> : <Navigate to="/dashboard" />} />
             <Route path="/viva" element={<VivaPractice />} />
-            <Route path="/home" element={<HomePage />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
