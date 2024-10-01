@@ -49,7 +49,12 @@ export default function HomePage() {
       </div>
 
       {/* Floating Dots for extra effect */}
-      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-32 right-32 opacity-80 blur-sm animate-bounce" />
+      {/* <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-32 right-32 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-orange-400 rounded-full top-78 right-16 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-44 right-20 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-orange-400 rounded-full top-60 right-48 opacity-80 blur-sm animate-bounce" />
+      <div className="absolute w-20 h-20 bg-yellow-400 rounded-full top-52 right-60 opacity-80 blur-sm animate-bounce" /> */}
+
       <div className="absolute w-16 h-16 bg-blue-300 rounded-full bottom-28 left-40 opacity-80 blur-sm animate-bounce delay-2000" />
 
       {/* Divider with smooth gradient transition */}
@@ -122,7 +127,7 @@ export default function HomePage() {
           opportunities.
         </p>
         <div className="flex justify-center">
-          <button className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out">
+          <button className="bg-white text-indigo-600 font-semibold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:text-indigo-800 hover:scale-105 duration-300 ease-in-out">
             Sign Up Now
           </button>
         </div>

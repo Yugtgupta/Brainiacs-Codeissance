@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from scholarship_recommendation import recommend_scholarships
 from flask import Flask, jsonify, request 
 from notes_from_pdf import generate_notes_from_pdf
@@ -8,6 +9,8 @@ from schedule_generator import generate_schedule
 from generic_chat import generate_study_response
 from yt_video_notes import generate_notes_from_yt_in
 app = Flask(__name__)
+CORS(app)
+CORS(app, origins=["http://localhost:3000"])
 
 @app.route('/')
 def home():

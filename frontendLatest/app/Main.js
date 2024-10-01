@@ -34,6 +34,8 @@ import ChatInterface from "./components/ChatInterface.js"
 import MentorDashboard from "./components/MentorDashboard.js"
 import VivaPractice from "./components/VivaPractice.js"
 import HomePage from "./components/HomePage.js"
+import NotesGeneration from "./components/Notesgeneration.js"
+import Chatbot from "./components/Chatbot.js"
 
 function Main() {
   //<> </> this is called as a react fragment.
@@ -111,12 +113,14 @@ function Main() {
 
             <Route path="/dashboard" element={state.loggedIn ? <Dashboard /> : <LockScreen />} />
 
-            <Route path="/scholarship" element={state.loggedIn ? <Dashboard /> : <ScholarshipList />} />
+            <Route path="/scholarship" element={state.loggedIn ? <ScholarshipList /> : <Dashboard />} />
 
             <Route path="/dashboard/student-mentorship" element={state.loggedIn && state?.user?.role === "student" ? <MenteeDashboard /> : <LockScreen />} />
             <Route path="/chat/:mentorId" element={<ChatInterface />} />
             <Route path="/dashboard/mentor-dashboard" element={state.loggedIn && state?.user?.role === "mentor" ? <MentorDashboard /> : <Navigate to="/dashboard" />} />
             <Route path="/viva" element={<VivaPractice />} />
+            <Route path="/notes" element={<NotesGeneration />} />
+            <Route path="/chat-bot" element={<Chatbot />} />
 
             <Route path="/community-forum" element={<LandingPage />} />
 
