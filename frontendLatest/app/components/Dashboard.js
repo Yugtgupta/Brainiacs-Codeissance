@@ -83,7 +83,6 @@ const styles = {
     maxWidth: "1200px",
     margin: "0 auto",
     padding: "20px",
-    backgroundColor: "#f0f4f8",
   },
   header: {
     display: "flex",
@@ -102,8 +101,8 @@ const styles = {
   },
   button: {
     padding: "10px 15px",
-    backgroundColor: "#3498db",
-    color: "white",
+    color: "black",
+    fontWight: "600",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
@@ -221,21 +220,51 @@ const Dashboard = () => {
       <header style={styles.header}>
         <h1 style={styles.greeting}>{`${getGreeting()}, ${userData.name}!`}</h1>
         <div style={styles.quickActions}>
-          <button style={styles.button}>Continue Learning</button>
-          <button style={styles.button}>Schedule a Session</button>
-          <button style={styles.button}>Find Scholarships</button>
+          <button
+            style={styles.button}
+            className="hover:bg-transparent hover:underline"
+          >
+            Continue Learning
+          </button>
+          {/* <button style={styles.button}>Schedule a Session</button> */}
+          <button
+            style={styles.button}
+            className="hover:bg-transparent hover:underline"
+          >
+            Find Scholarships
+          </button>
           {user?.role === "tutor" && (
-            <Link to="/dashboard/schedule-meet" style={styles.button}>
+            <Link
+              to="/dashboard/schedule-meet"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
               Schedule Tutoring
             </Link>
           )}
           {user?.role === "student" && (
-            <Link to="/dashboard/student-mentorship">Mentee</Link>
+            <Link
+              to="/dashboard/student-mentorship"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
+              Mentee
+            </Link>
           )}
           {user?.role === "mentor" && (
-            <Link to="/dashboard/mentor-dashboard">Mentor</Link>
+            <Link
+              to="/dashboard/mentor-dashboard"
+              style={styles.button}
+              className="hover:bg-transparent hover:underline"
+            >
+              Mentor
+            </Link>
           )}
-          <button style={styles.button} onClick={logoutHandler}>
+          <button
+            style={styles.button}
+            onClick={logoutHandler}
+            className="hover:bg-transparent hover:underline"
+          >
             Logout
           </button>
         </div>
