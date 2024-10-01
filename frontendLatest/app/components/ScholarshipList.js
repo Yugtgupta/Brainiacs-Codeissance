@@ -1,9 +1,6 @@
-
-
-import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import StateContext from "../StateContext";
-
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import  StateContext  from '../StateContext'; // Adjust the import according to your project structure
 
 const scholarships = [
     {
@@ -260,78 +257,55 @@ const scholarships = [
     }
 ];
 
+
 const ScholarshipList = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [state, setState] = useState("");
-    const [sscPerformance, setSscPerformance] = useState("");
-    const [hscPerformance, setHscPerformance] = useState("");
-    const {user} = useContext(StateContext);
+    const [recommendedScholarships, setRecommendedScholarships] = useState([]);
+    const { user } = useContext(StateContext);
+
+    // This will hold the original scholarships list
     const filteredScholarships = scholarships.filter(scholarship =>
         scholarship.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleGetRecommendations = async () => {
-        // Logic to send user profile and get recommendations
-        // const userProfile = {
-        //     state,
-        //     sscPerformance,
-        //     hscPerformance
-        // };
-console.log("HERE")
-       
+        console.log("Getting recommendations...");
+
         try {
-            console.log(user.token)
             const response = await axios.get(`/student/get-by-id/${user.id}`, {
                 headers: {
-                    Authorization: `Bearer' ${user.token}`,
-
+                    Authorization: `Bearer ${user.token}`,
                     "Cache-Control": "no-cache",
-            Pragma: "no-cache",
-            Expires: "0",
+                    Pragma: "no-cache",
+                    Expires: "0",
                 }
-              
             });
+
             const data = await response.data.data;
 
             const llmData = `
-             I am a ${data.caste} student from Maharashtra. 
-My family's annual income is ${data.parentAnualIncome}. 
-I have passed SSC and am looking for scholarship opportunities.
-            `
-            console.log("Recommendations received:", data);
+                I am a ${data.caste} student from Maharashtra. 
+                My family's annual income is ${data.parentAnualIncome}. 
+                I have passed SSC and am looking for scholarship opportunities.
+            `;
+            console.log("Student data:", data);
 
+            const pyResponse = await fetch('http://192.168.137.74:5000/get_recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user_profile: llmData }),
+            });
 
-            const pyResponse = await fetch('http://127.0.0.1:5000/get_recommendations', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ user_profile: llmData }),
-                    });
-                    const pydata = await pyResponse.json();
-                    console.log("Recommendations received:", pydata.recommendations);
+            const pyData = await pyResponse.json();
+            console.log("Recommendations received:", pyData.recommendations);
 
-
-            // Handle the received recommendations here (e.g., set them in state)
+            // Set the received recommendations in the state
+            setRecommendedScholarships(pyData.recommendations);
         } catch (error) {
             console.error("Error fetching recommendations:", error);
         }
-
-
-        // try {
-        //     const response = await fetch('http://127.0.0.1:5000/get_recommendations', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ user_profile: userProfile }),
-        //     });
-        //     const data = await response.json();
-        //     console.log("Recommendations received:", data.recommendations);
-        //     // Handle the received recommendations here (e.g., set them in state)
-        // } catch (error) {
-        //     console.error("Error fetching recommendations:", error);
-        // }
     };
 
     const maxCardHeight = "300px"; // Set a fixed height for all cards
@@ -339,42 +313,6 @@ I have passed SSC and am looking for scholarship opportunities.
     return (
         <div className="max-w-7xl mx-auto p-8 bg-gray-100 shadow-lg rounded-lg mt-10">
             <h2 className="text-4xl font-bold text-center text-indigo-600 mb-8">All Scholarships</h2>
-
-            {/* User Profile Section */}
-            <div className="mb-6 p-6 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <h3 className="text-2xl font-semibold mb-4">User Profile</h3>
-                <input
-                    type="text"
-                    placeholder="State"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    className="border border-gray-300 rounded-md p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <select
-                    value={sscPerformance}
-                    onChange={(e) => setSscPerformance(e.target.value)}
-                    className="border border-gray-300 rounded-md p-3 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                    <option value="">Select SSC Performance</option>
-                    <option value="passed">Passed</option>
-                    <option value="failed">Failed</option>
-                </select>
-                <select
-                    value={hscPerformance}
-                    onChange={(e) => setHscPerformance(e.target.value)}
-                    className="border border-gray-300 rounded-md p-3 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                    <option value="">Select HSC Performance</option>
-                    <option value="passed">Passed</option>
-                    <option value="failed">Failed</option>
-                </select>
-                <button
-                    onClick={handleGetRecommendations}
-                    className="w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700 transition duration-300"
-                >
-                    Get Recommendations
-                </button>
-            </div>
 
             {/* Search Input */}
             <div className="flex mb-4">
@@ -385,12 +323,21 @@ I have passed SSC and am looking for scholarship opportunities.
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="border border-gray-300 rounded-l-md p-3 flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
-                <button className="bg-indigo-600 text-white rounded-r-md p-3 flex items-center hover:bg-indigo-700 transition duration-300">
+                <button 
+                    className="bg-indigo-600 text-white rounded-r-md p-3 flex items-center hover:bg-indigo-700 transition duration-300">
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M16.5 10.5A6 6 0 108.5 10.5a6 6 0 008 0z" />
                     </svg>
                 </button>
             </div>
+
+            {/* Recommend Scholarships Button */}
+            <button
+                onClick={handleGetRecommendations}
+                className="mb-6 w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700 transition duration-300"
+            >
+                Recommend Scholarships
+            </button>
 
             {/* Scholarships List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -419,10 +366,41 @@ I have passed SSC and am looking for scholarship opportunities.
                         </a>
                     </div>
                 ))}
+
+                {/* Recommended Scholarships Section */}
+                {recommendedScholarships.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+                        <h2 className="text-3xl font-bold text-center text-indigo-600 mb-8">Recommended Scholarships</h2>
+                        {recommendedScholarships.map((scholarship, index) => (
+                            <div
+                                key={index}
+                                className="p-6 border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition duration-300 bg-white"
+                                style={{ height: maxCardHeight }}
+                            >
+                                <h3 className="text-xl font-bold text-indigo-600 mb-2">{scholarship.name}</h3>
+                                <p className="mt-2 text-gray-700 overflow-hidden" style={{ maxHeight: "100px", overflowY: "hidden" }}>
+                                    {scholarship.eligibility.split('\n').map((line, i) => (
+                                        <span key={i} className="block">{line}</span>
+                                    ))}
+                                </p>
+                                {scholarship.eligibility.length > 100 && (
+                                    <a href="#" className="text-indigo-500 hover:underline mt-2 inline-block" onClick={(e) => {
+                                        e.preventDefault();
+                                        alert(scholarship.eligibility); // Show full eligibility details in an alert (or you can implement a modal for better UX)
+                                    }}>
+                                        Read More
+                                    </a>
+                                )}
+                                <a href={scholarship.links} className="w-full bg-indigo-600 text-white font-bold p-2 m-4 rounded-md hover:bg-indigo-700 transition duration-300" target="_blank" rel="noopener noreferrer">
+                                    Apply Here
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
 export default ScholarshipList;
-
