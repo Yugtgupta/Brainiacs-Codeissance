@@ -190,7 +190,7 @@ const RegistrationPageMentor = () => {
             Register
           </button>
           <Link
-            to="/"
+            to="/auth"
             className="submit-button bg-transparent text-black mt-3 w-fit"
           >
             Go Back
