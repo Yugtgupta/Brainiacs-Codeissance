@@ -1,47 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { Calendar, Camera } from "lucide-react";
-import DispatchContext from "../DispatchContext";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import StateContext from "../StateContext";
-import { Axios } from "axios";
+import React, { useState, useEffect, useContext } from "react"
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
+import { Calendar, Camera } from "lucide-react"
+import DispatchContext from "../DispatchContext"
+import { Link, useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
+import StateContext from "../StateContext"
+import { Axios } from "axios"
 
 // Simulated API call to fetch user data
 const fetchUserData = () => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve({
         name: "Lakshitaa",
         courses: [
           { name: "Math Tutoring", progress: 75 },
           { name: "English Mentorship", progress: 60 },
-          { name: "Science Lab", progress: 85 },
+          { name: "Science Lab", progress: 85 }
         ],
         performanceData: [
           { month: "Jan", score: 65 },
           { month: "Feb", score: 70 },
           { month: "Mar", score: 75 },
-          { month: "Apr", score: 80 },
+          { month: "Apr", score: 80 }
         ],
         upcomingSessions: [
           { date: "2024-10-01", time: "15:00", subject: "Math" },
-          { date: "2024-10-03", time: "16:30", subject: "English" },
+          { date: "2024-10-03", time: "16:30", subject: "English" }
         ],
         scholarships: [
           { name: "STEM Excellence Scholarship", deadline: "2024-11-15" },
-          { name: "National Merit Award", deadline: "2024-12-01" },
+          { name: "National Merit Award", deadline: "2024-12-01" }
         ],
         mentorInfo: {
           name: "Dr. Jane Smith",
@@ -49,56 +38,56 @@ const fetchUserData = () => {
           messages: [
             {
               sender: "mentor",
-              text: "How's your progress on the Math assignment?",
+              text: "How's your progress on the Math assignment?"
             },
             {
               sender: "student",
-              text: "I'm almost done, just struggling with the last problem.",
+              text: "I'm almost done, just struggling with the last problem."
             },
             {
               sender: "mentor",
-              text: "Great! Let's review it in our next session.",
-            },
-          ],
+              text: "Great! Let's review it in our next session."
+            }
+          ]
         },
         communityPosts: [
           {
             title: "Tips for Acing Your SATs",
             author: "StudyGuru",
-            replies: 23,
+            replies: 23
           },
           {
             title: "College Application Essay Workshop",
             author: "WriteRight",
-            replies: 15,
-          },
-        ],
-      });
-    }, 1000); // Simulate network delay
-  });
-};
+            replies: 15
+          }
+        ]
+      })
+    }, 1000) // Simulate network delay
+  })
+}
 
 const styles = {
   dashboard: {
     fontFamily: "Arial, sans-serif",
     maxWidth: "1200px",
     margin: "0 auto",
-    padding: "20px",
+    padding: "20px"
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "20px",
+    marginBottom: "20px"
   },
   greeting: {
     fontSize: "24px",
     fontWeight: "bold",
-    color: "#2c3e50",
+    color: "#2c3e50"
   },
   quickActions: {
     display: "flex",
-    gap: "10px",
+    gap: "10px"
   },
   button: {
     padding: "10px 15px",
@@ -107,51 +96,51 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    transition: "background-color 0.3s",
+    transition: "background-color 0.3s"
   },
   section: {
     backgroundColor: "white",
     padding: "20px",
     borderRadius: "10px",
     marginBottom: "20px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
   },
   sectionTitle: {
     fontSize: "20px",
     fontWeight: "bold",
     marginBottom: "15px",
-    color: "#34495e",
+    color: "#34495e"
   },
   progressBar: {
     height: "20px",
     backgroundColor: "#ecf0f1",
     borderRadius: "10px",
     overflow: "hidden",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   progressFill: {
     height: "100%",
     backgroundColor: "#2ecc71",
-    transition: "width 0.5s ease-in-out",
+    transition: "width 0.5s ease-in-out"
   },
   calendar: {
     display: "grid",
     gridTemplateColumns: "repeat(7, 1fr)",
-    gap: "5px",
+    gap: "5px"
   },
   calendarDay: {
     padding: "10px",
     textAlign: "center",
     backgroundColor: "#e0e0e0",
-    borderRadius: "5px",
+    borderRadius: "5px"
   },
   mentorSection: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   mentorInfo: {
     flex: 1,
-    marginRight: "20px",
+    marginRight: "20px"
   },
   mentorChat: {
     flex: 2,
@@ -159,45 +148,45 @@ const styles = {
     padding: "10px",
     borderRadius: "5px",
     height: "200px",
-    overflowY: "auto",
+    overflowY: "auto"
   },
   scholarshipCard: {
     backgroundColor: "#f1f8e9",
     padding: "10px",
     marginBottom: "10px",
-    borderRadius: "5px",
+    borderRadius: "5px"
   },
   communityPost: {
     backgroundColor: "#e3f2fd",
     padding: "10px",
     marginBottom: "10px",
-    borderRadius: "5px",
+    borderRadius: "5px"
   },
   loadingScreen: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    fontSize: "24px",
-  },
-};
+    fontSize: "24px"
+  }
+}
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
-  const appDispatch = useContext(DispatchContext);
-  const { user } = useContext(StateContext);
+  const appDispatch = useContext(DispatchContext)
+  const { user } = useContext(StateContext)
 
-  if (user) console.log("USER DETAILS", user);
+  if (user) console.log("USER DETAILS", user)
 
   useEffect(() => {
-    fetchUserData().then((data) => {
-      setUserData(data);
-      setLoading(false);
-    });
-  }, []);
+    fetchUserData().then(data => {
+      setUserData(data)
+      setLoading(false)
+    })
+  }, [])
 
   // useEffect(() => {
   //   const fetchUserFromDB = async () => {
@@ -217,95 +206,77 @@ const Dashboard = () => {
   // }, []);
 
   if (loading) {
-    return <div style={styles.loadingScreen}>Loading your dashboard...</div>;
+    return <div style={styles.loadingScreen}>Loading your dashboard...</div>
   }
 
   const logoutHandler = () => {
-    appDispatch({ type: "logout" });
-    toast.success("Logged out successfully");
-    navigate("/");
-  };
+    appDispatch({ type: "logout" })
+    toast.success("Logged out successfully")
+    navigate("/")
+  }
 
   const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 18) return "Good Afternoon";
-    return "Good Evening";
-  };
+    const hour = new Date().getHours()
+    if (hour < 12) return "Good Morning"
+    if (hour < 18) return "Good Afternoon"
+    return "Good Evening"
+  }
 
   return (
     <div style={styles.dashboard}>
       <header style={styles.header}>
-        <h1 style={styles.greeting}>{`${getGreeting()}, User`}</h1>
+        <h1 style={styles.greeting}>{`${getGreeting()}, Rajiv Sharma`}</h1>
         <div style={styles.quickActions}>
-          <button
-            style={styles.button}
-            className="hover:bg-transparent hover:underline"
-          >
+          <Link to="/notes" style={styles.button} className="hover:bg-transparent hover:underline">
+            Generate Notes
+          </Link>
+
+          <Link to="/chat-bot" style={styles.button} className="hover:bg-transparent hover:underline">
+            My Assistant
+          </Link>
+          <button style={styles.button} className="hover:bg-transparent hover:underline">
             Continue Learning
           </button>
           {/* <button style={styles.button}>Schedule a Session</button> */}
-          <Link
-            to="/scholarship"
-            style={styles.button}
-            className="hover:bg-transparent hover:underline"
-          >
+          <Link to="/scholarship" style={styles.button} className="hover:bg-transparent hover:underline">
             Find Scholarships
           </Link>
           {user?.role === "tutor" && (
-            <Link
-              to="/dashboard/schedule-meet"
-              style={styles.button}
-              className="hover:bg-transparent hover:underline"
-            >
+            <Link to="/dashboard/schedule-meet" style={styles.button} className="hover:bg-transparent hover:underline">
               Schedule Tutoring
             </Link>
           )}
           {user?.role === "student" && (
-            <Link
-              to="/dashboard/student-mentorship"
-              style={styles.button}
-              className="hover:bg-transparent hover:underline"
-            >
+            <Link to="/dashboard/student-mentorship" style={styles.button} className="hover:bg-transparent hover:underline">
               Mentee
             </Link>
           )}
           {user?.role === "mentor" && (
-            <Link
-              to="/dashboard/mentor-dashboard"
-              style={styles.button}
-              className="hover:bg-transparent hover:underline"
-            >
+            <Link to="/dashboard/mentor-dashboard" style={styles.button} className="hover:bg-transparent hover:underline">
               Mentor
             </Link>
           )}
-          <button
-            style={styles.button}
-            onClick={logoutHandler}
-            className="hover:bg-transparent hover:underline"
-          >
+          <button style={styles.button} onClick={logoutHandler} className="hover:bg-transparent hover:underline">
             Logout
           </button>
         </div>
       </header>
 
       <div>
-        <h2 className="text-3xl font-semibold mt-4 mb-2">
-          {user?.role.charAt(0).toUpperCase() + user?.role.slice(1)} Dashboard
-        </h2>
+        <h2 className="text-3xl font-semibold mt-4 mb-2">{user?.role.charAt(0).toUpperCase() + user?.role.slice(1)} Dashboard</h2>
       </div>
 
       {user?.role === "student" && (
         <section style={styles.section}>
           <h2 style={styles.sectionTitle}>Learning Progress</h2>
-          {userData.courses.map((course) => (
+          {userData.courses.map(course => (
             <div key={course.name}>
               <p>{course.name}</p>
               <div style={styles.progressBar}>
                 <div
                   style={{
                     ...styles.progressFill,
-                    width: `${course.progress}%`,
+                    width: `${course.progress}%`
                   }}
                 />
               </div>
@@ -335,10 +306,7 @@ const Dashboard = () => {
         <div>
           {userData.upcomingSessions.map((session, index) => (
             <div key={index} style={{ marginBottom: "10px" }}>
-              <Calendar
-                size={16}
-                style={{ marginRight: "5px", verticalAlign: "middle" }}
-              />
+              <Calendar size={16} style={{ marginRight: "5px", verticalAlign: "middle" }} />
               <span>{`${session.date} ${session.time} - ${session.subject}`}</span>
             </div>
           ))}
@@ -370,12 +338,10 @@ const Dashboard = () => {
               <p
                 key={index}
                 style={{
-                  textAlign: message.sender === "mentor" ? "left" : "right",
+                  textAlign: message.sender === "mentor" ? "left" : "right"
                 }}
               >
-                <strong>
-                  {message.sender === "mentor" ? "Mentor: " : "You: "}
-                </strong>
+                <strong>{message.sender === "mentor" ? "Mentor: " : "You: "}</strong>
                 {message.text}
               </p>
             ))}
@@ -395,7 +361,7 @@ const Dashboard = () => {
         ))}
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
