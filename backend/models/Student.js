@@ -25,7 +25,7 @@ Student.prototype.cleanUp = function () {
     role: "student",
     createdAt: new Date(),
     //predefined end
-
+    skills: [],
     dob: this.data.dob,
     educationLevel: this.data.educationLevel,
     preferredSubjects: this.data.preferredSubjects,
@@ -89,4 +89,8 @@ Student.prototype.deleteById = async function (id) {
   return
 }
 
+Student.prototype.connectMentor = async function (studId, mentorId) {
+  await studentsCollection.findOneAndUpdate({ _id: new ObjectId(studId) }, { $set: { mentorId: new ObjectId(mentorId) } })
+  return
+}
 module.exports = Student

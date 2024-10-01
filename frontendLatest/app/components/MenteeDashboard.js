@@ -1,9 +1,15 @@
-import { Axios } from "axios";
-import React, { useEffect, useState } from "react";
-
+import Axios from "axios";
+import React, { useState } from "react";
+import { useContext } from "react";
+import { useEffect } from "react";
+import StateContext from "../StateContext";
+import { Link } from "react-router-dom";
 const MenteeDashboard = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
+  const [suggestedMentors, setSuggestedMentors] = useState([]);
+  const [studentMentor, setStudentMentor] = useState(null);
+  const { user } = useContext(StateContext);
 
   const upcomingSessions = [
     {
@@ -37,20 +43,20 @@ const MenteeDashboard = () => {
     },
   ];
 
-  const suggestedMentors = [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      specialization: "Web Development",
-      rating: 4.8,
-    },
-    {
-      id: 2,
-      name: "Bob Williams",
-      specialization: "Data Science",
-      rating: 4.9,
-    },
-  ];
+  // const suggestedMentors = [
+  //   {
+  //     id: 1,
+  //     name: "Alice Johnson",
+  //     specialization: "Web Development",
+  //     rating: 4.8
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Bob Williams",
+  //     specialization: "Data Science",
+  //     rating: 4.9
+  //   }
+  // ]
 
   const handleJoinSession = (session) => {
     setCurrentSession(session);
@@ -62,38 +68,71 @@ const MenteeDashboard = () => {
     setCurrentSession(null);
   };
 
+  const getUserDataById = async () => {
+    const userData = await Axios.get(`/student/get-by-id/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+
+    console.log(userData.data.data);
+
+    if (userData?.data.data?.mentorId) {
+      const mentorData = await Axios.get(
+        `/mentor/get-by-id/${userData.data.data.mentorId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log(mentorData.data.data);
+      setStudentMentor(mentorData.data.data);
+    }
+  };
+
   const connectMentorHandler = async (e, mentor) => {
     e.preventDefault();
     console.log("CONNECT MENTOR HANDLER", mentor);
 
     await Axios.post(
-      "/connect-mentor",
+      `/student/connect-mentor/${user.id}`,
       {
-        mentorId: mentor.id,
+        mentorId: mentor.mentorDoc._id,
       },
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       }
-    );
+    )
+      .then(async (response) => {
+        console.log(response);
+        // setStudentMentor();
+        getUserDataById();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
     const fetchDataFromDB = async () => {
       try {
-        const response = await Axios.get("/fetch-all-mentors", {
+        const response = await Axios.get(`/mentor/get-all/${user.id}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         });
-        console.log(response);
+        console.log(response.data.data);
+        setSuggestedMentors(response?.data.data);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchDataFromDB();
+    getUserDataById();
   }, []);
 
   return (
@@ -103,7 +142,7 @@ const MenteeDashboard = () => {
         <h1 className="text-4xl font-extrabold text-gray-800 mb-4 transition duration-300 ease-in-out hover:text-blue-600">
           Student Mentorship
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-center text-gray-600">
           Welcome back! Check out your upcoming sessions and explore new
           mentors.
         </p>
@@ -175,19 +214,40 @@ const MenteeDashboard = () => {
                 key={mentor.id}
                 className="p-4 bg-white shadow-md rounded-lg transition duration-300 ease-in-out hover:shadow-xl hover:bg-yellow-50"
               >
-                <h3 className="text-lg font-semibold text-gray-700">
-                  {mentor.name}
+                <h3 className="text-lg font-semibold text-gray-700 mb-[6px]">
+                  {mentor.mentorDoc.name} {mentor.mentorDoc.lName}
                 </h3>
-                <p className="text-sm text-gray-500">{mentor.specialization}</p>
-                <p className="text-sm text-yellow-500">
-                  Rating: {mentor.rating}
+                <p className="text-sm text-gray-500 mb-[6px]">
+                  {mentor.mentorDoc.email}
                 </p>
-                <button
-                  onClick={(e) => connectMentorHandler(e, mentor)}
-                  className="mt-4 inline-block bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-yellow-600"
-                >
-                  Connect
-                </button>
+                <p className="text-sm text-gray-500 mb-[6px]">
+                  Expertise: {mentor.mentorDoc.expertise.join(", ")}
+                </p>
+                <p className="text-base text-yellow-600 font-semibold">
+                  Matching Score: {mentor.score}
+                </p>
+                {studentMentor && studentMentor._id === mentor.mentorDoc._id ? (
+                  <div className="flex flex-col gap-6">
+                    <p className="text-sm text-gray-500">
+                      You are already connected with this mentor.
+                    </p>
+                    <Link
+                      to={`/chat/${mentor.mentorDoc._id}`}
+                      className="bg-emerald-700 text-white text-center hover:no-underline hover:bg-emerald-800 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+                    >
+                      Chat
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex flex-col w-full">
+                    <button
+                      onClick={(e) => connectMentorHandler(e, mentor)}
+                      className="mt-4 inline-block bg-yellow-500 text-center text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out hover:bg-yellow-600"
+                    >
+                      Connect
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

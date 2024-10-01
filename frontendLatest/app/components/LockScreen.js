@@ -1,3 +1,4 @@
+import { ArrowLeft } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -10,6 +11,12 @@ function LockScreen() {
           <p className="subtitle">Please select your role to sign in</p>
         </div>
         <div className="flex justify-center items-center flex-col gap-6 w-full">
+          <Link
+            to="/"
+            className="rounded-md text-lg border-2 border-black bg-transparent text-black w-fit text-center hover:no-underline hover:text-black flex justify-center items-center gap-2 px-4 py-2"
+          >
+            <ArrowLeft /> Go Back
+          </Link>
           <Link
             to="/register"
             className="role-btn mentor-btn bg-red-500 w-full text-center hover:no-underline hover:text-white"

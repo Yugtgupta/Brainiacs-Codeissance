@@ -97,9 +97,13 @@ function Main() {
 
           <Toaster />
           <Routes>
+            <Route path="/" element={<HomePage />} />
+
             <Route
-              path="/"
-              element={state.loggedIn ? <div>Loged in</div> : <LockScreen />}
+              path="/auth"
+              element={
+                state.loggedIn ? <Navigate to="/dashboard" /> : <LockScreen />
+              }
             />
 
             <Route
@@ -212,7 +216,6 @@ function Main() {
               }
             />
             <Route path="/viva" element={<VivaPractice />} />
-            <Route path="/home" element={<HomePage />} />
             <Route path="/notes" element={<NotesGeneration />} />
             <Route path="/chat-bot" element={<Chatbot />} />
 
